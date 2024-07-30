@@ -1,0 +1,12 @@
+label{
+ display: block;
+}
+
+li {
+    list-style-type: none;
+}
+
+.btn-primary{
+    color: white#000;
+}
+

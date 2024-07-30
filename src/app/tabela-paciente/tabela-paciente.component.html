@@ -1,0 +1,49 @@
+<div class="edie">
+   <h3 style="margin-right:45px;">Fila de pré-consulta</h3>
+   <span> 
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+        <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
+        <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+      </svg>
+      {{ this.currentDate | date: "dd/MM/yyyy ' às ' HH:mm" }}
+   </span>
+</div>
+<div class="edie">
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque aut nesciunt, molestiae veniam consectetur quae doloremque quas sequi provident ipsam aspernatur nostrum numquam sunt, temporibus asperiores. Magnam aliquam dolorum ad!</p>
+</div>
+<div class="edie-punto">
+    <input type="text" placeholder="pesquisar..."/>
+    <span></span>
+</div>
+
+<div>
+    <nz-table #basicTable>
+       <thead>
+          <tr>
+             <th>Name</th>
+             <th>Age</th>
+             <th>Adress</th>
+             <th>Action</th>
+          </tr> 
+       </thead>
+       <tbody>
+          <tr >
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+          </tr>  
+       </tbody>
+    </nz-table>
+    <app-modal-profissional></app-modal-profissional>
+    <form [formGroup]="form" >
+         <div formArrayName="grupo1">
+             <div *ngFor="let campo of this.grupo.controls; let index=index">
+                <div *ngIf=""></div>
+                <label [for]="'campo' + index">Campo {{index + 1}}</label>
+                <input [formControlName]="index" [id]="'campo' + index" />
+             </div>
+         </div>
+    </form>
+    <button (click)="acrescentaCampo('text')">Adicionar campo</button>
+</div>

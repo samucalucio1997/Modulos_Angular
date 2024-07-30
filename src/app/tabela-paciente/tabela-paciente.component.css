@@ -1,0 +1,15 @@
+.edie{
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+}
+
+.edie-punto{
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+.edie-punto-input{
+    border-radius: 8px;
+}

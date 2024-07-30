@@ -1,0 +1,23 @@
+<form>
+    <label for="nome">{{ nome }}</label>
+    <input type="text" [(ngModel)]="nome" name="nome"/>
+</form>
+
+<ul class="col-12 justify-content-between d-flex">
+    <li class="">
+        <a class="btn btn-outline-primary" [ngClass]="{ 'btn-primary' : aba }" (click)="selecionarAba1()">Selecionar Aba 1</a>
+    </li>
+    <li>
+        <a class="btn btn-outline-primary" [ngClass]="{ 'btn-primary' : !aba}" (click)="selecionarAba2()">Selecionar Aba 2</a>
+    </li>
+</ul>
+<div *ngIf="aba">
+    <p>propositos 1</p>
+    <p>propositos 2</p>
+</div>
+
+<div *ngIf="!aba">
+    <p>prop 1</p>
+    <p>prop 2</p>
+</div>
+<a routerLink="tabela">Ir para tabela</a>
