@@ -16,8 +16,6 @@ export class ModalProfissionalComponent implements OnInit{
   ngOnInit(): void {
     this.profissionaisLista = this.profissionais.ListaProfissionalService();
   }
-
-
   
   isVisible = false;
 

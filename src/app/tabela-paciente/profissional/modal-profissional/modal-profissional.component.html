@@ -1,8 +1,8 @@
-<button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" 
+<button nz-button [nzType]="'primary'" style="border-radius: 8px; margin: 2px;" (click)="showModal()"><span>Profissionais</span></button>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Lista de Profissionais" 
 (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
   <ng-container *nzModalContent>
-    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a person" [(ngModel)]="selectedValue">
+    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selecione um profissionais" [(ngModel)]="selectedValue">
       <div *ngFor="let lista of profissionaisLista">
         <nz-option [nzLabel]="lista" [nzValue]="lista"></nz-option>
       </div>  

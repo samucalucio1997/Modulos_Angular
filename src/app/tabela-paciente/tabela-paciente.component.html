@@ -11,27 +11,30 @@
 <div class="edie">
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque aut nesciunt, molestiae veniam consectetur quae doloremque quas sequi provident ipsam aspernatur nostrum numquam sunt, temporibus asperiores. Magnam aliquam dolorum ad!</p>
 </div>
-<div class="edie-punto">
-    <input type="text" placeholder="pesquisar..."/>
-    <span></span>
-</div>
 
 <div>
+   <div [formGroup]="form">
+      <div class="edie-punto">
+          <input type="text" placeholder="pesquisar..." formControlName="filtro2"/>
+          <span></span>
+      </div>
+      <select formControlName="filtro">
+         <option value="">Todos</option>
+         <option *ngFor="let dado of lista" [value]="dado">{{ dado }}</option>
+       </select>
+   </div>
+   
     <nz-table #basicTable>
        <thead>
           <tr>
              <th>Name</th>
              <th>Age</th>
-             <th>Adress</th>
-             <th>Action</th>
           </tr> 
        </thead>
        <tbody>
-          <tr >
-             <td></td>
-             <td></td>
-             <td></td>
-             <td></td>
+          <tr *ngFor="let item of dadoslist">
+             <td>{{item.name}}</td>
+             <td>{{item.age}}</td>
           </tr>  
        </tbody>
     </nz-table>
