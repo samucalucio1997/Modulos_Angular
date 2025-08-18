@@ -5,8 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class StorageServiceService {
    
-   
-   public getItem(chave:any):object{
+   public getItem(chave: string):object{
       try {
          var valor = localStorage.getItem(chave) as string;
          return JSON.parse(valor);
@@ -16,11 +15,11 @@ export class StorageServiceService {
       }
    }
 
-   public setItem(chave:any, valor:any):void{
+   public setItem(chave: string, valor: string):void{
        localStorage.setItem(chave, valor);
    }
 
-   public removeItem(chave:any){
+   public removeItem(chave: string){
       localStorage.removeItem(chave);
    }
   
