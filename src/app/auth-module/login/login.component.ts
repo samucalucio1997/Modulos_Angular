@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsuarioService } from '../../services/usuario.service';
+import { StorageServiceService } from '../../services/storage-service.service';
+import { Router } from '@angular/router';
+import { UsuarioResponse } from '../../interfaces/usuario-request';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +15,11 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   isLoading = false;
   showPassword = false; 
-
-  constructor(private formBuilder: FormBuilder) {}
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private usuarioService: UsuarioService = inject(UsuarioService);
+  private storageService: StorageServiceService = inject(StorageServiceService);
+  private router: Router = inject(Router);
+  private message = inject(NzMessageService);
 
   ngOnInit(): void {
     this.initializeForm();
@@ -19,8 +27,8 @@ export class LoginComponent implements OnInit {
 
   private initializeForm(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
   }
 
@@ -28,15 +36,24 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.isLoading = true;
       const formData = this.loginForm.value;
-      
-      // Simular chamada de API
-      console.log('Dados do login:', formData);
-      
-      // Simular delay de API
-      setTimeout(() => {
-        this.isLoading = false;
-        alert('Login realizado com sucesso!');
-      }, 1500);
+
+      this.usuarioService.autenticarUsuario(formData.email, formData.password)
+              .subscribe({
+                next: (response) => {
+                  const login: string = JSON.stringify(response);
+                  this.storageService.setItem('login', login);
+                  this.message.success('Login realizado com sucesso!');
+                  //  this.router.navigate(['/tabela']);
+                },
+                error: (error) => {
+                  console.error('Erro ao fazer login:', error);
+                  this.message.error('Erro ao fazer login. Verifique suas credenciais.');
+                  this.isLoading = false;
+                },
+                complete: () => {
+                  this.isLoading = false;
+                }
+              });
     } else {
       this.markFormGroupTouched();
     }
@@ -52,6 +69,11 @@ export class LoginComponent implements OnInit {
       control?.markAsTouched();
     });
   }
+
+  // redirectToManagerAccount(): void {
+  //   const usuarioResponse:UsuarioResponse = this.storageService.getItem('login') as UsuarioResponse;
+  //   const isAdmin = usuarioResponse.;
+  // }
 
   // Getters para facilitar o acesso aos controles no template
   get email() { return this.loginForm.get('email'); }

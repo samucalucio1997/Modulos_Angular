@@ -1,22 +1,36 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UsuarioResponse } from '../interfaces/usuario-request';
-import { signal } from '@angular/core';
+import { StorageServiceService } from './storage-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
+  private http: HttpClient = inject(HttpClient);
+  private storageService: StorageServiceService = inject(StorageServiceService);
+  private apiUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {}
-
-  validarToken(token: string): Signal<UsuarioResponse>{
-      const usuarioSignal = signal<UsuarioResponse | null>(null);
-
-      this.http.post<UsuarioResponse>('/users/validate', { token })
-        .subscribe(response => usuarioSignal.set(response));
-
-      return usuarioSignal as Signal<UsuarioResponse>;
+  autenticarUsuario(nomeUsuario: string, senha: string): Observable<UsuarioResponse> {
+    const body = new HttpParams()
+      .set('username', nomeUsuario)
+      .set('password', senha);
+  
+    return this.http.post<UsuarioResponse>(
+      this.apiUrl + '/auth/login',
+      body.toString(),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
   }
+
+  validarToken(token: string): Observable<UsuarioResponse>{  
+    return this.http.post<UsuarioResponse>(this.apiUrl + '/auth/validate', { token });
+  }
+
+  refreshToken(): Observable<UsuarioResponse>{
+    const token: UsuarioResponse = this.storageService.getItem('login') as UsuarioResponse;
+    return this.http.post<UsuarioResponse>(this.apiUrl + '/auth/refresh', { token });
+  }
+
 }

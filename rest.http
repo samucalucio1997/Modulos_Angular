@@ -1,10 +1,4 @@
-POST http://localhost:8080/users/register
-Content-Type: application/json
+POST http://localhost:8080/home/cadastroUser?username=samuca&name=Samuel&password=senha!123&email=seu@email.com&lastname=Sobrenome&first_name=Samuel&last_name=elson&cep=1234567890&numcasa=1645&is_staff=351622
 
-{
-    "username": "samuca",
-    "name": "Samuel",
-    "password": "senha!123",
-    "email": "seu@email.com",
-    "lastname": "Sobrenome"
-}
+###
+POST http://localhost:8080/auth/login?username=samuca&password=senha!123

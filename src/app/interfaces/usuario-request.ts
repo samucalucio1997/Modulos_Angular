@@ -1,5 +1,6 @@
 export interface UsuarioResponse {
+    id: number;
     nome: String;
-    email: String;
-    
+    token: String;
+    email?: String;
 }

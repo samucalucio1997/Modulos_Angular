@@ -21,12 +21,6 @@ const routes: Routes = [
     path: 'tabela',
     loadChildren: () => import('./tabela-paciente/tabela-paciente.module').then(m => m.TabelaModule),
     canActivate: []
-  },
-  { 
-    path: 'formularioapp', 
-    loadChildren: () => import('./formulario-dinamicos/formulario-dinamicos.module').then(m => m.FormularioDinamicosModule),
-    data: { breadcrumb: 'Formulário Dinâmico' },
-    canActivate: [autorizedAuthGuard]
   }
 ];
 

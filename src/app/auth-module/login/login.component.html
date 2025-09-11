@@ -17,10 +17,6 @@
           class="form-control"
           [class.error]="email?.invalid && email?.touched"
         />
-        <div class="error-messages" *ngIf="email?.invalid && email?.touched">
-          <small *ngIf="email?.errors?.['required']">Email é obrigatório</small>
-          <small *ngIf="email?.errors?.['email']">Email deve ter um formato válido</small>
-        </div>
       </div>
 
       <!-- Campo Senha -->
@@ -80,5 +76,13 @@
         <p>Não tem uma conta? <a href="#">Registre-se aqui</a></p>
       </div>
     </form>
+    <ng-container *ngIf="false">
+      <!-- <nz-alert
+      nzType="success"
+      nzMessage="Success Tips"
+      nzDescription="Detailed description and advices about successful copywriting."
+      nzShowIcon
+    ></nz-alert> -->
+    </ng-container>
   </div>
 </div>
