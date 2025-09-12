@@ -6,28 +6,25 @@
     [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null">
     <div class="sidebar-logo">
-      <a href="https://ng.ant.design/" target="_blank">
-        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
-        <h1>Ant Design Of Angular</h1>
-      </a>
+      <h1>Sistema de Gerenciamento de Estoque</h1>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/welcome">Welcome</a>
+            <a routerLink="/welcome/dashboard">Dashboard</a>
           </li>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/tabela">Tabela</a>
+            <a routerLink="/welcome/tabela">Tabela</a>
           </li>  
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/formularioapp">formulario dinamico</a>
+            <a routerLink="/welcome/gerenciar-estoque">Gerenciar Estoque</a>
           </li>  
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/welcome/login">Login</a>
+          </li>
           <li nz-menu-item nzMatchRouter>
             <a>Monitor</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a>Workplace</a>
           </li>
         </ul>
       </li>
@@ -44,9 +41,10 @@
         </span>
       </div>
     </nz-header>
-    <nz-content>
-      <div class="inner-content">
-      </div>
-    </nz-content>
+      <nz-content>
+        <div class="inner-content">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
   </nz-layout>
 </nz-layout>
