@@ -2,10 +2,14 @@ export interface UsuarioResponse {
     id: number;
     nome: String;
     email?: String;
-    authorities?: Map<string, string>;
+    authorities?: Authority[];
 }
 
 export interface LoginResponse {
     token: String;
-    usuario: UsuarioResponse;
+    user: UsuarioResponse;
+}
+
+export interface Authority {
+    authority: string;
 }
