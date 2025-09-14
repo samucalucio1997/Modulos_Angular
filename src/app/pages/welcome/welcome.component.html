@@ -11,7 +11,10 @@
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
-          <li nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter *ngFor="let modulo of modulos">
+            <a [routerLink]="'welcome/' + modulo.router">{{modulo.moduleName}}</a>
+          </li>
+          <!-- <li nz-menu-item nzMatchRouter>
             <a routerLink="/welcome/dashboard">Dashboard</a>
           </li>
           <li nz-menu-item nzMatchRouter>
@@ -22,7 +25,7 @@
           </li>  
           <li nz-menu-item nzMatchRouter>
             <a>Monitor</a>
-          </li>
+          </li> -->
         </ul>
       </li>
     </ul>

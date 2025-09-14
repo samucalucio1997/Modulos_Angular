@@ -1,0 +1,5 @@
+export enum PermissionEnum {
+    DASHBOARD = 'DASHBOARD',
+    GERENCIAR_ESTOQUE = 'GERENCIAR_ESTOQUE',
+    MONITOR = 'MONITOR'
+}

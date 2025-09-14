@@ -12,6 +12,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { IconsProviderModule } from '../../icons-provider.module';
+import { Permission } from '../../function/permision';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { IconsProviderModule } from '../../icons-provider.module';
         IconsProviderModule
   ],
   declarations: [WelcomeComponent, DashboardComponent],
-  exports: [WelcomeComponent]
+  exports: [WelcomeComponent],
+  providers: [Permission]
 })
 export class WelcomeModule {}
