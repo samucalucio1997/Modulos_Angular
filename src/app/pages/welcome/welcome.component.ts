@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, SimpleChange } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ModuloItem } from '../../interfaces/modulos/modulo-item';
 import { Permission } from '../../function/permision';
@@ -9,7 +9,7 @@ import { Permission } from '../../function/permision';
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-   isCollapsed = false;
+   isCollapsed = true;
   private $modulos = new Subject<ModuloItem[]>();
   public modulos: ModuloItem[] = [];
   public permision: Permission = inject(Permission);
@@ -17,8 +17,7 @@ export class WelcomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.$modulos.next(this.permision.getPermission());
-    this.$modulos.subscribe(mods => this.modulos = mods);
+    this.modulos = this.permision.getPermission();
   }
 
   getModulos(): ModuloItem[] {

@@ -1,7 +1,7 @@
 import { Observable, Subject } from "rxjs";
 import { StorageServiceService } from "../services/storage-service.service";
 import { inject } from "@angular/core";
-import { UsuarioResponse } from "../interfaces/usuario-request";
+import { LoginResponse, UsuarioResponse } from "../interfaces/usuario-request";
 import { ModuloItem } from "../interfaces/modulos/modulo-item";
 
 export class Permission {
@@ -10,12 +10,12 @@ export class Permission {
     
 
     getPermission():  ModuloItem[] {
-        const usuarioLogado: UsuarioResponse = this.storageLocalService.getItem('login') as UsuarioResponse;
-        const perfil: string = usuarioLogado.authorities?.at(0)?.authority as string;
+        const usuarioLogado: LoginResponse = this.storageLocalService.getItem('login') as LoginResponse;
+        const perfil: string = usuarioLogado.user.authorities?.at(0)?.authority as string;
         
         const modulosAdmin: ModuloItem[] = [
             {
-                moduleName: 'gerenciar-estoque',
+                moduleName: 'Gerenciar-Estoque',
                 router: 'gerenciar-estoque'
             },
             {

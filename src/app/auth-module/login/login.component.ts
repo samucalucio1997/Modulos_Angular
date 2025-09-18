@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit {
                   const login: string = JSON.stringify(response);
                   this.storageService.setItem('login', login);
                   this.message.success('Login realizado com sucesso!');
-                  //  this.router.navigate(['/tabela']);
+                  this.router.navigateByUrl('/welcome/dashboard');
+                  this.initializeForm();
                 },
                 error: (error) => {
                   console.error('Erro ao fazer login:', error);
