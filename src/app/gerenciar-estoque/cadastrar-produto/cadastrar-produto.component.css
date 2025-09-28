@@ -1,0 +1,47 @@
+.container-fluid {
+  padding: 20px;
+}
+
+h2 {
+  color: #1890ff;
+  margin-bottom: 20px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.py-4 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+/* Estilo para o botão de voltar */
+nz-button[nzType="default"] {
+  transition: all 0.3s ease;
+}
+
+nz-button[nzType="default"]:hover {
+  transform: translateY(-1px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 10px;
+  }
+  
+  .text-right {
+    text-align: center;
+    margin-top: 15px;
+  }
+}
+

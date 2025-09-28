@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-8">
+      <h2>Cadastrar Produto</h2>
+    </div>
+    <div class="col-4 text-right">
+      <button 
+        nz-button 
+        nzType="default" 
+        nzSize="large"
+        routerLink="/gerenciar-estoque">
+        <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+        Voltar para Lista
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <nz-card nzTitle="Informações do Produto" [nzBordered]="false">
+        <div class="text-center py-4">
+          <nz-empty 
+            nzNotFoundImage="assets/empty.svg"
+            nzNotFoundContent="Formulário de cadastro em desenvolvimento">
+            <button nz-button nzType="primary" disabled>
+              <i nz-icon nzType="plus" nzTheme="outline"></i>
+              Cadastrar Produto
+            </button>
+          </nz-empty>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,148 @@
-<p>list-estoque works!</p>
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-8">
+      <h2>Lista de Estoque</h2>
+    </div>
+    <div class="col-4 text-right">
+      <button 
+        nz-button 
+        nzType="primary" 
+        nzSize="large"
+        routerLink="/gerenciar-estoque/cadastrar-produto">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        Cadastrar Produto
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <nz-card nzTitle="Filtros" [nzBordered]="false">
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label nz-typography>Filtrar por Categoria:</label>
+            <nz-select
+              [(ngModel)]="categoriaSelecionada"
+              (ngModelChange)="onCategoriaChange($event)"
+              nzPlaceHolder="Selecione uma categoria"
+              nzAllowClear
+              style="width: 100%">
+              <nz-option nzValue="null" nzLabel="Todas as categorias"></nz-option>
+              <nz-option 
+                *ngFor="let categoria of categorias | keyvalue" 
+                [nzValue]="categoria.value" 
+                [nzLabel]="getNomeCategoria(categoria.value)">
+              </nz-option>
+            </nz-select>
+          </div>
+          
+          <div class="col-md-3 mb-3">
+            <label nz-typography>Preço Mínimo:</label>
+            <nz-input-number
+              [(ngModel)]="precoMinimo"
+              (ngModelChange)="onPrecoMinimoChange($event)"
+              nzPlaceHolder="Preço mínimo"
+              [nzMin]="0"
+              [nzStep]="0.01"
+              style="width: 100%">
+            </nz-input-number>
+          </div>
+          
+          <div class="col-md-3 mb-3">
+            <label nz-typography>Preço Máximo:</label>
+            <nz-input-number
+              [(ngModel)]="precoMaximo"
+              (ngModelChange)="onPrecoMaximoChange($event)"
+              nzPlaceHolder="Preço máximo"
+              [nzMin]="0"
+              [nzStep]="0.01"
+              style="width: 100%">
+            </nz-input-number>
+          </div>
+          
+          <div class="col-md-3 mb-3 d-flex align-items-end">
+            <button 
+              nz-button 
+              nzType="default" 
+              nzSize="large"
+              (click)="limparFiltros()"
+              style="width: 100%">
+              <i nz-icon nzType="clear" nzTheme="outline"></i>
+              Limpar Filtros
+            </button>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+
+  <!-- Tabela -->
+  <div class="row">
+    <div class="col-12">
+      <nz-card nzTitle="Produtos em Estoque" [nzBordered]="false">
+        <nz-table 
+          #basicTable 
+          [nzData]="produtosFiltrados" 
+          [nzPageSize]="10"
+          [nzShowPagination]="true"
+          [nzShowSizeChanger]="true"
+          [nzShowQuickJumper]="true"
+          nzBordered>
+          
+          <thead>
+            <tr>
+              <th nzWidth="80px">Matrícula</th>
+              <th nzWidth="200px">Nome do Produto</th>
+              <th nzWidth="120px">Preço</th>
+              <th nzWidth="150px">Categoria</th>
+              <th nzWidth="120px">Estoque</th>
+              <th nzWidth="100px">Ações</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr *ngFor="let produto of produtosFiltrados">
+              <td>{{ produto.matricula }}</td>
+              <td>{{ produto.nome }}</td>
+              <td>
+                <span class="text-success font-weight-bold">
+                  R$ {{ produto.preco | number:'1.2-2' }}
+                </span>
+              </td>
+              <td>
+                <nz-tag [nzColor]="getCorCategoria(produto.setor)">
+                  {{ getNomeCategoria(produto.setor) }}
+                </nz-tag>
+              </td>
+              <td>
+                <span [class]="getClasseEstoque(produto.entradaEstoque)">
+                  {{ produto.entradaEstoque }}
+                </span>
+              </td>
+              <td>
+                <button nz-button nzType="link" nzSize="small">
+                  <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </button>
+                <button nz-button nzType="link" nzSize="small" nzDanger>
+                  <i nz-icon nzType="delete" nzTheme="outline"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        
+        <!-- Mensagem quando não há produtos -->
+        <div *ngIf="produtosFiltrados.length === 0" class="text-center py-4">
+          <nz-empty 
+            nzNotFoundImage="assets/empty.svg"
+            nzNotFoundContent="Nenhum produto encontrado com os filtros aplicados">
+            <button nz-button nzType="primary" (click)="limparFiltros()">
+              Limpar Filtros
+            </button>
+          </nz-empty>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</div>

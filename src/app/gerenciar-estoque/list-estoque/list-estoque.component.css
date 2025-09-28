@@ -1,0 +1,91 @@
+.container-fluid {
+  padding: 20px;
+}
+
+h2 {
+  color: #1890ff;
+  margin-bottom: 20px;
+}
+
+.text-success {
+  color: #52c41a !important;
+}
+
+.text-warning {
+  color: #faad14 !important;
+}
+
+.text-danger {
+  color: #ff4d4f !important;
+}
+
+.font-weight-bold {
+  font-weight: 600;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.py-4 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+/* Estilo para a tabela */
+nz-table {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para os filtros */
+nz-card {
+  margin-bottom: 20px;
+}
+
+/* Estilo para os botões de ação */
+nz-button[nzType="link"] {
+  padding: 4px 8px;
+  margin: 0 2px;
+}
+
+/* Estilo para o botão de cadastro */
+nz-button[nzType="primary"] {
+  box-shadow: 0 2px 4px rgba(24, 144, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+nz-button[nzType="primary"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(24, 144, 255, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .col-md-3 {
+    margin-bottom: 15px;
+  }
+  
+  .container-fluid {
+    padding: 10px;
+  }
+}

@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth-module/auth-module.module').then(m => m.AuthModuleModule)
+  },
+  {
+    path: 'gerenciar-estoque',
+    loadChildren: () => import('./gerenciar-estoque/gerenciar-estoque.module').then(m => m.GerenciarEstoqueModule)
   }
 ];
 
