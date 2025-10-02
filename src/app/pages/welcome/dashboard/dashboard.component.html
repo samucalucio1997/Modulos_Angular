@@ -2,18 +2,11 @@
   <h1>Bem-vindo ao Sistema de Gerenciamento de Estoque</h1>
   <p>Selecione uma opção no menu lateral para começar.</p>
   
-  <div class="dashboard-cards">
-    <nz-card nzTitle="Tabela de Pacientes" nzHoverable style="width: 300px;">
-      <p>Gerencie informações dos pacientes</p>
-      <button nz-button nzType="primary" routerLink="/welcome/tabela">
-        Acessar Tabela
-      </button>
-    </nz-card>
-    
-    <nz-card nzTitle="Gerenciar Estoque" nzHoverable style="width: 300px;">
-      <p>Controle de produtos e estoque</p>
-      <button nz-button nzType="primary" routerLink="/welcome/gerenciar-estoque">
-        Gerenciar Estoque
+  <div class="dashboard-cards" *ngFor="let modulo of modulos">
+    <nz-card [nzTitle]="modulo.moduleName" nzHoverable style="width: 300px;">
+      <p>{{ modulo.descricao }}</p>
+      <button nz-button nzType="primary" [routerLink]="modulo.router">
+      {{ modulo.descricao }}
       </button>
     </nz-card>
   </div>

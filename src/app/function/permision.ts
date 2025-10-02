@@ -15,27 +15,32 @@ export class Permission {
         
         const modulosAdmin: ModuloItem[] = [
             {
-                moduleName: 'Gerenciar-Estoque',
-                router: 'gerenciar-estoque'
+            moduleName: 'Gerenciar-Estoque',
+            router: '../gerenciar-estoque',
+            descricao: 'Gerencie o estoque do sistema'
             },
             {
-                moduleName: 'Tabela',
-                router: 'tabela'
+            moduleName: 'Tabela',
+            router: '../tabela',
+            descricao: 'Visualize e edite tabelas'
             },
             {
-                moduleName: 'dashboard',
-                router: 'dashboard'
+            moduleName: 'dashboard',
+            router: '../dashboard',
+            descricao: 'Painel de controle e estatísticas'
             }
         ];
         
         const modulosUser: ModuloItem[] = [
             {
-                moduleName: 'Tabela',
-                router: 'tabela'
+            moduleName: 'Tabela',
+            router: 'tabela',
+            descricao: 'Visualize e edite tabelas'
             },
             {
-                moduleName: 'dashboard',
-                router: 'dashboard'
+            moduleName: 'dashboard',
+            router: 'dashboard',
+            descricao: 'Painel de controle e estatísticas'
             }
         ];
 
