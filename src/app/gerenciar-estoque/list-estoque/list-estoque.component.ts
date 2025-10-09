@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Produto } from '../../interfaces/produto';
 import { CategoriProduto } from '../../enum/categori-produto';
+import { ProdutoDto } from '../../interfaces/produto';
 
 @Component({
   selector: 'app-list-estoque',
@@ -9,12 +9,13 @@ import { CategoriProduto } from '../../enum/categori-produto';
 })
 export class ListEstoqueComponent implements OnInit {
   
-  produtos: Produto[] = [];
-  produtosFiltrados: Produto[] = [];
+  produtos: ProdutoDto[] = [];
+  produtosFiltrados: ProdutoDto[] = [];
   categorias = CategoriProduto;
   categoriaSelecionada: CategoriProduto | null = null;
   precoMinimo: number | string | null = null;
   precoMaximo: number | string | null = null;
+  // private productServicea: P
 
   ngOnInit() {
     this.carregarDadosMockados();
@@ -23,74 +24,74 @@ export class ListEstoqueComponent implements OnInit {
 
   carregarDadosMockados() {
     this.produtos = [
-      {
-        matricula: 1,
-        nome: 'Smartphone Samsung Galaxy',
-        preco: 1200.00,
-        setor: CategoriProduto.Eletronica,
-        entradaEstoque: 15
-      },
-      {
-        matricula: 2,
-        nome: 'Camiseta Polo',
-        preco: 89.90,
-        setor: CategoriProduto.Roupa,
-        entradaEstoque: 50
-      },
-      {
-        matricula: 3,
-        nome: 'Arroz Integral 5kg',
-        preco: 25.50,
-        setor: CategoriProduto.Alimentício,
-        entradaEstoque: 100
-      },
-      {
-        matricula: 4,
-        nome: 'Licença de Software',
-        preco: 500.00,
-        setor: CategoriProduto.Imaterial,
-        entradaEstoque: 1
-      },
-      {
-        matricula: 5,
-        nome: 'Notebook Dell',
-        preco: 2500.00,
-        setor: CategoriProduto.Eletronica,
-        entradaEstoque: 8
-      },
-      {
-        matricula: 6,
-        nome: 'Calça Jeans',
-        preco: 150.00,
-        setor: CategoriProduto.Roupa,
-        entradaEstoque: 30
-      },
-      {
-        matricula: 7,
-        nome: 'Feijão Preto 1kg',
-        preco: 8.90,
-        setor: CategoriProduto.Alimentício,
-        entradaEstoque: 200
-      },
-      {
-        matricula: 8,
-        nome: 'Assinatura Premium',
-        preco: 29.90,
-        setor: CategoriProduto.Imaterial,
-        entradaEstoque: 1
-      }
+      // {
+      //   id: 1,
+      //   nome: 'Smartphone Samsung Galaxy',
+      //   preco: 1200.00,
+      //   setor: CategoriProduto.Eletronica,
+      //   entradaEstoque: 15
+      // },
+      // {
+      //   matricula: 2,
+      //   nome: 'Camiseta Polo',
+      //   preco: 89.90,
+      //   setor: CategoriProduto.Roupa,
+      //   entradaEstoque: 50
+      // },
+      // {
+      //   matricula: 3,
+      //   nome: 'Arroz Integral 5kg',
+      //   preco: 25.50,
+      //   setor: CategoriProduto.Alimentício,
+      //   entradaEstoque: 100
+      // },
+      // {
+      //   matricula: 4,
+      //   nome: 'Licença de Software',
+      //   preco: 500.00,
+      //   setor: CategoriProduto.Imaterial,
+      //   entradaEstoque: 1
+      // },
+      // {
+      //   matricula: 5,
+      //   nome: 'Notebook Dell',
+      //   preco: 2500.00,
+      //   setor: CategoriProduto.Eletronica,
+      //   entradaEstoque: 8
+      // },
+      // {
+      //   matricula: 6,
+      //   nome: 'Calça Jeans',
+      //   preco: 150.00,
+      //   setor: CategoriProduto.Roupa,
+      //   entradaEstoque: 30
+      // },
+      // {
+      //   matricula: 7,
+      //   nome: 'Feijão Preto 1kg',
+      //   preco: 8.90,
+      //   setor: CategoriProduto.Alimentício,
+      //   entradaEstoque: 200
+      // },
+      // {
+      //   matricula: 8,
+      //   nome: 'Assinatura Premium',
+      //   preco: 29.90,
+      //   setor: CategoriProduto.Imaterial,
+      //   entradaEstoque: 1
+      // }
     ];
   }
 
   aplicarFiltros() {
     this.produtosFiltrados = this.produtos.filter(produto => {
-      const categoriaMatch = !this.categoriaSelecionada || produto.setor === this.categoriaSelecionada;
+      const categoriaMatch = !this.categoriaSelecionada || produto.categoria === this.categoriaSelecionada;
       
       const precoMin = typeof this.precoMinimo === 'string' ? parseFloat(this.precoMinimo) : this.precoMinimo;
       const precoMax = typeof this.precoMaximo === 'string' ? parseFloat(this.precoMaximo) : this.precoMaximo;
       
-      const precoMinMatch = !precoMin || produto.preco >= precoMin;
-      const precoMaxMatch = !precoMax || produto.preco <= precoMax;
+      const precoMinMatch = !precoMin || produto.precoUni >= precoMin;
+      const precoMaxMatch = !precoMax || produto.precoUni <= precoMax;
       
       return categoriaMatch && precoMinMatch && precoMaxMatch;
     });
