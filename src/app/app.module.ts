@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TabelaPacienteComponent } from './tabela-paciente/tabela-paciente.component';
 import { IconDirective, IconSetService } from '@coreui/icons-angular';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -46,7 +46,6 @@ registerLocaleData(pt);
     NzIconModule,
     NzEmptyModule,
     NzTypographyModule,
-    FormsModule,
     IconsProviderModule
   ],
   providers: [IconDirective,IconSetService, { provide: NZ_I18N, useValue: pt_BR }, provideAnimationsAsync(), provideHttpClient()],

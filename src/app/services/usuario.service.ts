@@ -24,8 +24,8 @@ export class UsuarioService {
     );
   }
 
-  validarToken(token: string): Observable<UsuarioResponse>{  
-    return this.http.post<UsuarioResponse>(this.apiUrl + '/auth/validate', { token });
+  validarToken(token: String): Observable<boolean>{  
+    return this.http.post<boolean>(this.apiUrl + '/auth/validate', { token });
   }
 
   refreshToken(): Observable<UsuarioResponse>{

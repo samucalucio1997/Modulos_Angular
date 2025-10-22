@@ -1,5 +1,10 @@
 import { CategoriProduto } from "../enum/categori-produto";
 
+export interface ProdutoReponse {
+    imgs: string;
+    produto: ProdutoDto
+}
+
 export interface ProdutoDto {
     id: number;
     nome: string;
