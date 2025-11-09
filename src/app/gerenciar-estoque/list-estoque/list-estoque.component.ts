@@ -14,43 +14,52 @@ export class ListEstoqueComponent implements OnInit {
   produtos: ProdutoDto[] = [];
   produtosFiltrados: ProdutoDto[] = [];
   carregando: boolean = false;
+  public pageIndex: number = 1;
+  public pageSize: number = 10;
+  public totalElements: number = 50;
   categorias = CategoriProduto;
   CategoriProduto = CategoriProduto; // Para usar no template
   private produtoService: ProdutoService = inject(ProdutoService);
   
-  filtrosForm: FormGroup;
-  categoriaSelecionada: FormControl;
-  precoMinimo: FormControl;
-  precoMaximo: FormControl;
+  filtrosForm!: FormGroup;
   
-  constructor(private fb: FormBuilder) {
-    this.categoriaSelecionada = new FormControl(null);
-    this.precoMinimo = new FormControl(null);
-    this.precoMaximo = new FormControl(null);
-    
+  constructor(private fb: FormBuilder) { 
+    this.initializerFormsFilter();
+  }
+
+  initializerFormsFilter() {
     this.filtrosForm = this.fb.group({
-      categoria: this.categoriaSelecionada,
-      precoMinimo: this.precoMinimo,
-      precoMaximo: this.precoMaximo
+      categoriaSelecionada: [],
+      precoMinimo: [],
+      precoMaximo: []
     });
   }
 
   ngOnInit() {
-    this.carregarProdutos();
+   
+    this.carregarProdutos(this.getCategoria()?.value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, this.pageIndex, this.pageSize);
+
+    this.getCategoria().valueChanges.subscribe(
+      categoria => {
+        console.log(categoria);
+        this.carregarProdutos(categoria || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, this.pageIndex, this.pageSize);
+      } 
+    )
   }
 
-  carregarProdutos() {
+  carregarProdutos(categoria:string, precoMin:number, precoMax:number, pageIndex: number, pageSize:number) {
     this.carregando = true;
-    this.produtoService.getProdutoList()
+    this.produtoService.getProdutoList(categoria, precoMin, precoMax, pageIndex, pageSize)
     .subscribe({
       next: (produtosResponse) => {
-        this.produtos = produtosResponse.map(pro => pro.produto) as ProdutoDto[];
-        console.log('Produtos carregados:', produtosResponse);
-        // this.aplicarFiltros();
+        console.log(produtosResponse);
+        this.produtos = produtosResponse.content;
+        this.pageIndex = produtosResponse.number - 1;
+        this.pageSize = produtosResponse.pageSize;
+        this.totalElements = produtosResponse.totalElements;
       },
       error: (err) => {
         console.error('Erro ao carregar produtos:', err);
-        // Em caso de erro, usar dados mock para teste
         this.carregando = false;
       },
       complete: () => {
@@ -59,11 +68,49 @@ export class ListEstoqueComponent implements OnInit {
     });
   }
 
-  getCategoriaNome(categoria: CategoriProduto): string {
-    return CategoriProduto[categoria] || 'Desconhecida';
+  limparFiltros() {
+    // this.filtrosForm.
   }
 
-  
+  searchDataPage(page: number): void {
+    const indexPage: number = page;
+    console.log("aqui ta o index " + indexPage);
+    this.carregarProdutos(this.getCategoria().value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, indexPage, this.pageSize);
+  }
 
-  
+  searchDataSize(size: number): void {
+    console.log(size);
+  }
+
+  getCategoriaNome(categoria: CategoriProduto): string {
+    // console.log("aqui ta a categoria backend " + CategoriProduto[categoria])
+    return CategoriProduto[categoria] || 'Desconhecida';
+  } 
+
+  // getCorCategoria(categoria: CategoriProduto): string {
+  //   switch (categoria) {
+  //     case CategoriProduto.Eletronica:
+  //       return 'blue';
+  //     case CategoriProduto.Alimentício:
+  //       return 'green';
+  //     case CategoriProduto.Roupas:
+  //       return 'purple';
+  //     case CategoriProduto.Imaterial:
+  //       return 'orange';
+  //     default:
+  //       return 'default';
+  //   }
+  // }
+
+  getCategoria(): FormControl {
+    return this.filtrosForm.get("categoriaSelecionada") as FormControl;
+  }
+
+  getPrecoMax(): FormControl {
+    return this.filtrosForm.get("precoMaximo") as FormControl;
+  }
+
+  getPrecoMinimo(): FormControl {
+    return this.filtrosForm.get("precoMinimo") as FormControl;
+  }
 }
