@@ -1,7 +1,7 @@
 export interface PageResponse<T> {
     content: Array<T>;
     totalPages: number;
-    pageSize: number;
+    size: number;
     totalElements: number;
     number: number;
 }

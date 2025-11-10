@@ -79,16 +79,18 @@
       <nz-spin [nzSpinning]="carregando" nzTip="Carregando produtos...">
         <nz-card nzTitle="Produtos em Estoque" [nzBordered]="true">
           <nz-table 
-            #basicTable 
+            #table
             [nzData]="produtos"
-            (nzPageIndex)="pageIndex" 
-            (nzPageSize)="pageSize"
-            (nzTotal)="totalElements"
+            [nzPageIndex]="pageIndex"
+            [nzPageSize]="pageSize"
+            [nzTotal]="totalElements"
             (nzPageIndexChange)="searchDataPage($event)"
             (nzPageSizeChange)="searchDataSize($event)"
             nzShowSizeChanger
             nzShowPagination
-            nzBordered>
+            [nzFrontPagination]="false"
+            nzBordered
+            >
             <thead>
               <tr>
                 <th nzWidth="80px">Matrícula</th>

@@ -27,12 +27,14 @@ export class ProdutoService {
     if (precoMax != null) {
       params = params.set("precoMax", precoMax);
     }
+    console.log('size', pageSize);
+    console.log('number', pageIndex);
     if (pageSize != 0) {
       params = params.set("size", pageSize);
     } else{
       params = params.set("size", 10);
     }
-    params = params.set("number", pageIndex)
+    params = params.set("page", pageIndex)
 
     return this.http.get<PageResponse<ProdutoDto>>(`${API_BASEURL_PRODUTO}/produtos`, { params });
   }
