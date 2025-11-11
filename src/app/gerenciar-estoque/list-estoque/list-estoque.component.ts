@@ -36,12 +36,10 @@ export class ListEstoqueComponent implements OnInit {
   }
 
   ngOnInit() {
-   
     this.carregarProdutos(this.getCategoria()?.value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, 0, this.pageSize);
 
     this.getCategoria().valueChanges.subscribe(
       categoria => {
-        console.log(categoria);
         this.carregarProdutos(categoria || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, this.pageIndex, this.pageSize);
       } 
     )
@@ -56,12 +54,6 @@ export class ListEstoqueComponent implements OnInit {
         this.pageIndex = produtosResponse.number;
         this.pageSize = produtosResponse.size;
         this.totalElements = produtosResponse.totalElements;
-        console.log("json ativo", {
-  pageIndex: this.pageIndex,
-  pageSize: this.pageSize,
-  totalElements: this.totalElements,
-  totalPages: produtosResponse.totalPages,
-});
       },
       error: (err) => {
         console.error('Erro ao carregar produtos:', err);
@@ -79,7 +71,7 @@ export class ListEstoqueComponent implements OnInit {
 
   searchDataPage(page: number): void {
     console.log('passando aqui', page);
-    this.carregarProdutos(this.getCategoria().value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, page, this.pageSize);
+    this.carregarProdutos(this.getCategoria().value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, page - 1, this.pageSize);
   }
 
   searchDataSize(size: number): void {
