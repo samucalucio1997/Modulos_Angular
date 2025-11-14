@@ -40,10 +40,11 @@ export class LoginComponent implements OnInit {
       this.usuarioService.autenticarUsuario(formData.email, formData.password)
               .subscribe({
                 next: (response) => {
-                  const login: string = JSON.stringify(response);
+                  const login: string = JSON.stringify(response.user);
                   this.storageService.setItem('login', login);
+                  this.storageService.setItem('token', String(response.token));
                   this.message.success('Login realizado com sucesso!');
-                  this.router.navigateByUrl('/welcome/dashboard');
+                  this.router.navigateByUrl('/welcome');
                   this.initializeForm();
                 },
                 error: (error) => {

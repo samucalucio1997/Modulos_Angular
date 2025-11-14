@@ -10,8 +10,8 @@ export class Permission {
     
 
     getPermission():  ModuloItem[] {
-        const usuarioLogado: LoginResponse = this.storageLocalService.getItem('login') as LoginResponse;
-        const perfil: string = usuarioLogado.user.authorities?.at(0)?.authority as string;
+        const usuarioLogado: UsuarioResponse = this.storageLocalService.getItem('login') as UsuarioResponse;
+        const perfil: string = usuarioLogado.authorities?.at(0)?.authority as string;
         
         const modulosAdmin: ModuloItem[] = [
             {

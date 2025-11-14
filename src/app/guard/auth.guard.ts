@@ -8,10 +8,10 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router: Router = inject(Router);
   
   try {
-    const loginResponse: LoginResponse = storageService.getItem('login') as LoginResponse;
+    const loginResponse: string = storageService.getItemString('token') as string;
     
     // Verifica se existe um token válido
-    if (loginResponse && loginResponse.token) {
+    if (loginResponse != '') {
       return true;
     }
   } catch (error) {
