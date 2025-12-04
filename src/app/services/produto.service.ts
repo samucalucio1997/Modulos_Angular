@@ -4,7 +4,7 @@ import { ProdutoDto, ProdutoReponse } from '../interfaces/produto';
 import { Observable } from 'rxjs';
 import { PageResponse } from '../interfaces/response/PageResponse';
 
-const API_BASEURL_PRODUTO: string = 'http://localhost:8080/produto';
+const API_BASEURL_PRODUTO: string = 'http://localhost:8082/produto';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +13,7 @@ export class ProdutoService {
   private http: HttpClient = inject(HttpClient);
   
   cadastrarProduto(produto: ProdutoDto): Observable<ProdutoReponse> {
-    return this.http.post<ProdutoReponse>(`${API_BASEURL_PRODUTO}/`, produto);
+    return this.http.post<ProdutoReponse>(`${API_BASEURL_PRODUTO}/cadastraProduto`, produto);
   }
 
   getProdutoList(categoria: string | null, precoMin?: number | null, precoMax?: number | null, pageIndex: number = 0, pageSize: number = 0): Observable<PageResponse<ProdutoDto>> {
@@ -27,8 +27,7 @@ export class ProdutoService {
     if (precoMax != null) {
       params = params.set("precoMax", precoMax);
     }
-    console.log('size', pageSize);
-    console.log('number', pageIndex);
+
     if (pageSize != 0) {
       params = params.set("size", pageSize);
     } else{

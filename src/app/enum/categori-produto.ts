@@ -1,6 +1,6 @@
 export enum CategoriProduto {
-    Eletronicos,
-    Calcados,
-    Roupas,
-    Esportes
+    Eletronicos='eletronicos',
+    Calcados='calcados',
+    Roupas='roupas',
+    Esportes='esportes'
 }

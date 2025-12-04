@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { CategoriProduto } from '../../enum/categori-produto';
 import { ProdutoDto, ProdutoReponse } from '../../interfaces/produto';
 import { ProdutoService } from '../../services/produto.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { ModalFormProdutoComponent } from '../../components/shared/modal-form-produto/modal-form-produto.component';
 
 @Component({
   selector: 'app-list-estoque',
@@ -20,6 +22,7 @@ export class ListEstoqueComponent implements OnInit {
   categorias = CategoriProduto;
   CategoriProduto = CategoriProduto; // Para usar no template
   private produtoService: ProdutoService = inject(ProdutoService);
+  private nzModalService: NzModalService = inject(NzModalService);
   
   filtrosForm!: FormGroup;
   
@@ -81,7 +84,7 @@ export class ListEstoqueComponent implements OnInit {
 
   getCategoriaNome(categoria: CategoriProduto): string {
     // console.log("aqui ta a categoria backend " + CategoriProduto[categoria])
-    return CategoriProduto[categoria] || 'Desconhecida';
+    return 'Desconhecida';
   } 
 
   // getCorCategoria(categoria: CategoriProduto): string {
@@ -98,6 +101,13 @@ export class ListEstoqueComponent implements OnInit {
   //       return 'default';
   //   }
   // }
+
+  abrirModal(): void {
+     this.nzModalService.create({
+        nzContent: ModalFormProdutoComponent,
+        nzWidth: '40%'
+      }); 
+  }
 
   getCategoria(): FormControl {
     return this.filtrosForm.get("categoriaSelecionada") as FormControl;

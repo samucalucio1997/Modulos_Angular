@@ -22,8 +22,9 @@ import { pt_BR } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import pt from '@angular/common/locales/pt';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { IconsProviderModule } from './icons-provider.module';
+import { authInterceptorInterceptor } from './middleware/auth-interceptor.interceptor';
 
 registerLocaleData(pt);
 
@@ -48,7 +49,9 @@ registerLocaleData(pt);
     NzTypographyModule,
     IconsProviderModule
   ],
-  providers: [IconDirective,IconSetService, { provide: NZ_I18N, useValue: pt_BR }, provideAnimationsAsync(), provideHttpClient()],
+  providers: [IconDirective,IconSetService, { provide: NZ_I18N, useValue: pt_BR },
+     provideAnimationsAsync(), provideHttpClient(withInterceptors([authInterceptorInterceptor]))
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

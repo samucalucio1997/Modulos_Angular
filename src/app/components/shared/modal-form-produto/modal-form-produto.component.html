@@ -1,0 +1,86 @@
+<nz-modal 
+   [(nzVisible)]="isVisible"
+   [nzTitle]="''"
+   (nzOnCancel)="handleCancel()"
+   (nzOnOk)="handleOk()"
+   >
+      <ng-container *nzModalContent>
+        <form [formGroup]="produtoForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="nome" 
+                            formControlName="nome" 
+                            placeholder="Nome do produto"
+                            [class.is-invalid]="produtoForm.get('nome')?.invalid && produtoForm.get('nome')?.touched" />
+                        <div class="invalid-feedback" *ngIf="produtoForm.get('nome')?.invalid && produtoForm.get('nome')?.touched">
+                                Nome é obrigatório e deve ter pelo menos 2 caracteres.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="codigo" class="form-label">Categoria <span class="text-danger">*</span></label>
+                        <nz-select
+                          formControlName="categoriaSelecionada"
+                          nzPlaceHolder="Selecione uma categoria"
+                          nzAllowClear
+                          style="width: 100%">
+                          <nz-option [nzValue]="null" nzLabel="Todas as categorias"></nz-option>
+                          <nz-option
+                            *ngFor="let categoria of categorias" 
+                            [nzValue]="categoria" 
+                            [nzLabel]="categoria | titlecase">
+                          </nz-option>
+                        </nz-select>
+                        <div class="invalid-feedback" *ngIf="produtoForm.get('categoriaSelecionada')?.invalid && produtoForm.get('categoriaSelecionada')?.touched">
+                            categoria é obrigatória.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="preco" class="form-label">Preço <span class="text-danger">*</span></label>
+                      <input 
+                        type="number" 
+                        class="form-control" 
+                        id="preco" 
+                        formControlName="precoUni" 
+                        placeholder="Preço"
+                        step="0.01"
+                        min="0"
+                        [class.is-invalid]="produtoForm.get('preco')?.invalid && produtoForm.get('preco')?.touched" />
+                      <div class="invalid-feedback" *ngIf="produtoForm.get('precoUni')?.invalid && produtoForm.get('precoUni')?.touched">
+                        Preço é obrigatório e deve ser maior que zero.
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="quantidade" class="form-label">Quantidade</label>
+                      <input 
+                        type="number" 
+                        class="form-control" 
+                        id="quantidade" 
+                        formControlName="quantidade" 
+                        placeholder="Quantidade em estoque"
+                        min="0"
+                        [class.is-invalid]="produtoForm.get('quantidade')?.invalid && produtoForm.get('quantidade')?.touched" />
+                      <div class="invalid-feedback" *ngIf="produtoForm.get('quantidade')?.invalid && produtoForm.get('quantidade')?.touched">
+                        Quantidade deve ser maior ou igual a zero.
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                      <label for="descricao" class="form-label">Descrição</label>
+                      <textarea 
+                        class="form-control" 
+                        id="descricao" 
+                        formControlName="descricao" 
+                        rows="3" 
+                        placeholder="Descrição do produto"></textarea>
+                    </div>
+                </div>
+        </form>
+    </ng-container>
+</nz-modal>

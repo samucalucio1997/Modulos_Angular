@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-// Ng-Zorro Modules
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -21,6 +20,8 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { GerenciarEstoqueRoutingModule } from './gerenciar-estoque-routing.module';
 import { ListEstoqueComponent } from './list-estoque/list-estoque.component';
 import { CadastrarProdutoComponent } from './cadastrar-produto/cadastrar-produto.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { SharedModule } from '../components/shared/shared.module';
 
 
 @NgModule({
@@ -38,10 +39,11 @@ import { CadastrarProdutoComponent } from './cadastrar-produto/cadastrar-produto
     NzSelectModule,
     NzInputNumberModule,
     NzButtonModule,
-    NzFormModule,
     NzInputModule,
     NzGridModule,
     NzSpinModule,
+    NzModalModule,
+    SharedModule,
     ReactiveFormsModule,
     NzTagModule,
     NzIconModule,

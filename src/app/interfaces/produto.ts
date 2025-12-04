@@ -6,13 +6,13 @@ export interface ProdutoReponse {
 }
 
 export interface ProdutoDto {
-    id: number;
+    id?: number;
     nome: string;
     qtd: number;
     precoUni: number;
     descricao: string;
     categoria: CategoriProduto;
-    imagens: ImagemProdutoDTO[];
+    imagens?: ImagemProdutoDTO[];
 }
 
 export interface ImagemProdutoDTO {

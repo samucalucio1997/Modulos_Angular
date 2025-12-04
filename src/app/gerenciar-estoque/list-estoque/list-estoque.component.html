@@ -8,7 +8,8 @@
       nz-button 
       nzType="primary" 
       nzSize="large"
-      [routerLink]="['../gerenciar-estoque/cadastrar-produto']">
+      (click)="abrirModal()"
+      >
       <i nz-icon nzType="plus" nzTheme="outline"></i>
       Cadastrar Produto
       </button>
