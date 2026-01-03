@@ -1,5 +1,32 @@
 <form [formGroup]="produtoForm">
   <div class="row">
+    <div class="col-12 mb-3">
+      <!-- <label for="descricao" class="form-label">Descrição</label> -->
+      <nz-upload
+          nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          nzListType="picture-card"
+          [(nzFileList)]="fileList"
+          [nzShowButton]="fileList.length < 8"
+          [nzPreview]="handlePreview"
+        >
+        <div>
+          <nz-icon nzType="plus" />
+          <div style="margin-top: 8px">Upload</div>
+        </div>
+      </nz-upload>
+      <nz-modal
+        [nzVisible]="previewVisible"
+        [nzContent]="modalContent"
+        [nzFooter]="null"
+        (nzOnCancel)="previewVisible = false"
+      >
+        <ng-template #modalContent>
+          <img [src]="previewImage" style="width: 100%" />
+        </ng-template>
+      </nz-modal>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-6 mb-3">
       <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
       <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Nome do produto"
@@ -13,7 +40,7 @@
       <nz-select formControlName="categoriaSelecionada" nzPlaceHolder="Selecione uma categoria" nzAllowClear
         style="width: 100%">
         <nz-option [nzValue]="null" nzLabel="Todas as categorias"></nz-option>
-        <nz-option *ngFor="let categoria of categorias" [nzValue]="categoria" [nzLabel]="categoria | titlecase">
+        <nz-option *ngFor="let categoria of categorias" [nzValue]="categoria | titlecase" [nzLabel]="categoria | titlecase">
         </nz-option>
       </nz-select>
       <div class="invalid-feedback"
@@ -49,5 +76,9 @@
       <textarea class="form-control" id="descricao" formControlName="descricao" rows="3"
         placeholder="Descrição do produto"></textarea>
     </div>
+  </div>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
+    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isLoading">Cadastrar</button>
   </div>
 </form>
