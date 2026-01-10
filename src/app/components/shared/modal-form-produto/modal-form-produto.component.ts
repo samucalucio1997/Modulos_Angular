@@ -32,9 +32,8 @@ export class ModalFormProdutoComponent implements OnInit{
     private frm: FormBuilder = inject(FormBuilder);
   
     ngOnInit(): void {
-      this.produtoData = this.nzModalData;
+      this.produtoData = this.nzModalData.produto;
       if (this.produtoData) {
-        console.log('o produto vai ser editado', this.produtoData);
         this.produtoForm = this.frm.group({
             nome: this.produtoData.nome,
             codigo: this.produtoData.id,
