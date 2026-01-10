@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProdutoService } from '../../../services/produto.service';
 import { ProdutoDto } from '../../../interfaces/produto';
@@ -6,7 +6,7 @@ import { CategoriProduto } from '../../../enum/categori-produto';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable } from 'rxjs';
 import { FileUtilService } from '../../../services/file-util.service';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
@@ -14,12 +14,14 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   templateUrl: './modal-form-produto.component.html',
   styleUrls: ['./modal-form-produto.component.css']
 })
-export class ModalFormProdutoComponent {
+export class ModalFormProdutoComponent implements OnInit{
+    readonly nzModalData= inject(NZ_MODAL_DATA);
     loadingFile: boolean = false;
     previewVisible: boolean = false;
     fileList: NzUploadFile[] = [];
     previewImage: string | undefined = '';
     produtoForm!: FormGroup;
+    produtoData?: ProdutoDto;
     isLoading: boolean = false;
     categorias: string[] = Object.values(CategoriProduto);
 
@@ -27,17 +29,32 @@ export class ModalFormProdutoComponent {
     private fileUtil: FileUtilService = inject(FileUtilService);
     private modal: NzModalRef = inject(NzModalRef);
     private nzMessageService: NzMessageService = inject(NzMessageService);
-
-    constructor(private frm: FormBuilder) {
+    private frm: FormBuilder = inject(FormBuilder);
+  
+    ngOnInit(): void {
+      this.produtoData = this.nzModalData;
+      if (this.produtoData) {
+        console.log('o produto vai ser editado', this.produtoData);
+        this.produtoForm = this.frm.group({
+            nome: this.produtoData.nome,
+            codigo: this.produtoData.id,
+            precoUni: this.produtoData.precoUni,
+            quantidade: this.produtoData.qtd,
+            foto: this.frm.array([]),
+            descricao: this.produtoData.descricao,
+            categoriaSelecionada: this.produtoData.categoria,
+        });
+      }else {
         this.produtoForm = this.frm.group({
             nome: ['', Validators.required],
             codigo: ['', Validators.required],
             precoUni: [0.0, Validators.required],
             quantidade: [1],
-            foto: frm.array([]),
+            foto: this.frm.array([]),
             descricao: ['', Validators.required],
             categoriaSelecionada: ['', Validators.required],
         });
+      }
     }
 
     handleCancel(): void {
@@ -64,7 +81,7 @@ export class ModalFormProdutoComponent {
          imagens: this.produtoForm.get('foto')?.value,
          categoria: this.produtoForm.get('categoriaSelecionada')?.value as CategoriProduto
        };
-       console.log('aqui é o array de fotos', this.fileList);
+
        this.produtoService.cadastrarProduto(produto, this.fileList)
        .subscribe(
         (resp) => { 

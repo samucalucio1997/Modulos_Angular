@@ -72,6 +72,16 @@ export class ListEstoqueComponent implements OnInit {
     // this.filtrosForm.
   }
 
+  editProduto(produto: ProdutoDto): void {
+    this.nzModalService.create({
+      nzContent: ModalFormProdutoComponent,
+      nzWidth: '40%',
+      nzData: {
+        produto
+      } 
+    });
+  }
+
   searchDataPage(page: number): void {
     console.log('passando aqui', page);
     this.carregarProdutos(this.getCategoria().value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, page - 1, this.pageSize);
@@ -87,20 +97,9 @@ export class ListEstoqueComponent implements OnInit {
     return 'Desconhecida';
   } 
 
-  // getCorCategoria(categoria: CategoriProduto): string {
-  //   switch (categoria) {
-  //     case CategoriProduto.Eletronica:
-  //       return 'blue';
-  //     case CategoriProduto.Alimentício:
-  //       return 'green';
-  //     case CategoriProduto.Roupas:
-  //       return 'purple';
-  //     case CategoriProduto.Imaterial:
-  //       return 'orange';
-  //     default:
-  //       return 'default';
-  //   }
-  // }
+  editModal(): void {
+    
+  }
 
   abrirModal(): void {
      this.nzModalService.create({
