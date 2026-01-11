@@ -20,8 +20,6 @@ export class ProdutoService {
 
       const formData = new FormData();
       
-      console.log('aqui esta o produto enviado', produto);
-      
       formData.append(
         'produto',
         new Blob([JSON.stringify(produto)], { type: 'application/json' })
