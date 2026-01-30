@@ -31,7 +31,7 @@
               <nz-option 
                 *ngFor="let categoria of categorias | keyvalue" 
                 [nzValue]="categoria.value" 
-                [nzLabel]="getCategoriaNome(categoria.value)">
+                [nzLabel]="categoria.value">
               </nz-option>
             </nz-select>
           </div>

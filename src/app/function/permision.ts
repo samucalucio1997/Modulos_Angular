@@ -15,7 +15,7 @@ export class Permission {
         
         const modulosAdmin: ModuloItem[] = [
             {
-            moduleName: 'Gerenciar-Estoque',
+            moduleName: 'Gerenciar Estoque',
             router: '../gerenciar-estoque',
             descricao: 'Gerencie o estoque do sistema'
             },

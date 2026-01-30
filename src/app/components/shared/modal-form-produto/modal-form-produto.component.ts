@@ -1,13 +1,13 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProdutoService } from '../../../services/produto.service';
-import { ProdutoDto } from '../../../interfaces/produto';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ImagemProdutoDTO, ProdutoDto } from '../../../interfaces/produto';
 import { CategoriProduto } from '../../../enum/categori-produto';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { Observable } from 'rxjs';
 import { FileUtilService } from '../../../services/file-util.service';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { ProdutoService } from '../../../services/api/produto.service';
+import { CORE_API_URL } from '../../../services/api/core.constants';
 
 @Component({
   selector: 'app-modal-form-produto',
@@ -17,6 +17,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class ModalFormProdutoComponent implements OnInit{
     readonly nzModalData= inject(NZ_MODAL_DATA);
     loadingFile: boolean = false;
+    imagensProduto: String[] = [];
     previewVisible: boolean = false;
     fileList: NzUploadFile[] = [];
     previewImage: string | undefined = '';
@@ -34,18 +35,27 @@ export class ModalFormProdutoComponent implements OnInit{
     ngOnInit(): void {
       if (this.nzModalData) {
         this.produtoData = this.nzModalData.produto;
-      }
-      if (this.produtoData) {
         this.produtoForm = this.frm.group({
-            nome: this.produtoData.nome,
-            codigo: this.produtoData.id,
-            precoUni: this.produtoData.precoUni,
-            quantidade: this.produtoData.qtd,
-            foto: this.frm.array([]),
-            descricao: this.produtoData.descricao,
-            categoriaSelecionada: this.produtoData.categoria,
+            nome: this.produtoData?.nome,
+            codigo: this.produtoData?.id,
+            precoUni: this.produtoData?.precoUni,
+            quantidade: this.produtoData?.qtd,
+            foto: this.produtoData?.imagens,
+            descricao: this.produtoData?.descricao,
+            categoriaSelecionada: this.produtoData?.categoria,
         });
-      }else {
+
+        // const imagensDto: ImagemProdutoDTO = this.produtoForm.get('foto')?.value as ImagemProdutoDTO;//função separada 
+        // const image: NzUploadFile = {
+        //   uid: String(imagensDto.id),
+        //   name: imagensDto.path,
+        //   url: `http://localhost:8082/files/img?nomeArquivo=${imagensDto.path}`
+        // }
+        // this.fileList.push(image);
+
+        this.addImagemLista(this.produtoForm, this.fileList);
+
+      } else {
         this.produtoForm = this.frm.group({
             nome: ['', Validators.required],
             codigo: ['', Validators.required],
@@ -70,6 +80,16 @@ export class ModalFormProdutoComponent implements OnInit{
       this.previewImage = file.url;
       this.previewVisible = true;
       console.log(this.previewImage);
+    }
+
+    resolveImage(img: any): string {
+      return this.previewImage
+        ? this.previewImage
+        : this.getImage(img);
+    }
+
+    getImage(img: any): string {
+      return `${CORE_API_URL}/files/img?nomeArquivo=${img.nomeArquivo}`;
     }
 
     handleOk(): void {
@@ -111,14 +131,20 @@ export class ModalFormProdutoComponent implements OnInit{
       
     }
 
-    resetForm(): void {
-
-    }
-
     getCategoriaNome(categoria: string): string {
       if (categoria == null) {
         return '';
       }
       return typeof categoria === 'string' ? categoria : (CategoriProduto as any)[categoria];
+    }
+
+    addImagemLista(produtoForm: FormGroup, fileList: NzUploadFile[]):void {
+      const imagensDto: ImagemProdutoDTO = produtoForm.get('foto')?.value as ImagemProdutoDTO;
+      const image: NzUploadFile = {
+          uid: String(imagensDto.id),
+          name: imagensDto.path,
+          url: `${CORE_API_URL}/files/img?nomeArquivo=${imagensDto.path}`
+        }
+        fileList.push(image);
     }
 }

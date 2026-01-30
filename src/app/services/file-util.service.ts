@@ -5,6 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class FileUtilService {
 
+
+  
+
   getBase64(file: File): Promise<string | ArrayBuffer | null> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

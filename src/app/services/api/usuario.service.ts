@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { LoginResponse, UsuarioResponse } from '../interfaces/usuario-request';
-import { StorageServiceService } from './storage-service.service';
+import { LoginResponse, UsuarioResponse } from '../../interfaces/usuario-request';
+import { StorageServiceService } from '../storage-service.service';
 
 @Injectable({
   providedIn: 'root'

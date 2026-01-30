@@ -15,14 +15,16 @@
         </div>
       </nz-upload>
       <nz-modal
-        [nzVisible]="previewVisible"
-        [nzContent]="modalContent"
+        [(nzVisible)]="previewVisible"
         [nzFooter]="null"
-        (nzOnCancel)="previewVisible = false"
       >
-        <ng-template #modalContent>
-          <img [src]="previewImage" style="width: 100%" />
-        </ng-template>
+        <ng-container *nzModalContent>
+        
+          <div *ngFor="let img of imagensProduto">
+              <img [src]="getImage(img)" style="width: 100%" />
+          </div>
+          
+        </ng-container>
       </nz-modal>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { StorageServiceService } from '../services/storage-service.service';
-import { UsuarioService } from '../services/usuario.service';
+import { UsuarioService } from '../services/api/usuario.service';
 import { inject } from '@angular/core';
 import { catchError, switchMap, tap, throwError } from 'rxjs';
 

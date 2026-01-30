@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { CategoriProduto } from '../../enum/categori-produto';
-import { ProdutoDto, ProdutoReponse } from '../../interfaces/produto';
-import { ProdutoService } from '../../services/produto.service';
+import { ProdutoDto } from '../../interfaces/produto';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalFormProdutoComponent } from '../../components/shared/modal-form-produto/modal-form-produto.component';
+import { ProdutoService } from '../../services/api/produto.service';
 
 @Component({
   selector: 'app-list-estoque',
@@ -83,7 +83,6 @@ export class ListEstoqueComponent implements OnInit {
   }
 
   searchDataPage(page: number): void {
-    console.log('passando aqui', page);
     this.carregarProdutos(this.getCategoria().value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, page - 1, this.pageSize);
   }
 

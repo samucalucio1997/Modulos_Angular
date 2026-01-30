@@ -30,8 +30,11 @@ export class WelcomeComponent implements OnInit {
 
   handlerLogOut(): void {
     this.storageService.removeItem('login');
-    // window.location.href = '/login';
     console.log(this.storageService.getItem('login'));
     this.router.navigate(['/login']);
+  }
+
+  handleTuggle(): void {
+    this.isCollapsed = !this.isCollapsed;
   }
 }

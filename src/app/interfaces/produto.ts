@@ -17,8 +17,8 @@ export interface ProdutoDto {
 
 export interface ImagemProdutoDTO {
     id: number;
-    nomeArquivo: string;
-    caminhoArquivo: string;
-    tipoArquivo: string;
-    tamanhoArquivo: number;
+    path: string;
+    caminhoArquivo?: string;
+    tipoArquivo?: string;
+    tamanhoArquivo?: number;
 }

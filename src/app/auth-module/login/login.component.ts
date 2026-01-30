@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UsuarioService } from '../../services/usuario.service';
+import { UsuarioService } from '../../services/api/usuario.service';
 import { StorageServiceService } from '../../services/storage-service.service';
 import { Router } from '@angular/router';
 import { UsuarioResponse } from '../../interfaces/usuario-request';

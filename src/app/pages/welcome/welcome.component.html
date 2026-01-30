@@ -13,34 +13,11 @@
         <a [routerLink]="'/welcome/' + modulo.router">{{ modulo.moduleName }}</a>
       </li>
     </ul>
-    <!--
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
-        <ul>
-          <li nz-menu-item nzMatchRouter *ngFor="let modulo of modulos">
-            <a [routerLink]="'welcome/' + modulo.router">{{modulo.moduleName}}</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/welcome/dashboard">Dashboard</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/welcome/tabela">Tabela</a>
-          </li>  
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/welcome/gerenciar-estoque">Gerenciar Estoque</a>
-          </li>  
-          <li nz-menu-item nzMatchRouter>
-            <a>Monitor</a>
-          </li>
-        </ul>
-      </li>
-    </ul> 
-    -->
   </nz-sider>
   <nz-layout>
     <nz-header>
       <div class="app-header">
-        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+        <span class="header-trigger" (click)="handleTuggle()">
             <span class="trigger"
                nz-icon
                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"

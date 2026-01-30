@@ -9,12 +9,14 @@ import { NzOptionComponent, NzSelectModule } from "ng-zorro-antd/select";
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { RelatorioComponent } from './relatorio/relatorio.component';
 
 
 
 @NgModule({
   declarations: [
-    ModalFormProdutoComponent
+    ModalFormProdutoComponent,
+    RelatorioComponent
   ],
   imports: [
     CommonModule,

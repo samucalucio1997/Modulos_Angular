@@ -22,9 +22,11 @@ import { pt_BR } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import pt from '@angular/common/locales/pt';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { IconsProviderModule } from './icons-provider.module';
 import { authInterceptorInterceptor } from './middleware/auth-interceptor.interceptor';
+import { environment } from './enviroments/enviroments';
+import { CORE_API_URL } from './services/api/core.constants';
 
 registerLocaleData(pt);
 
@@ -51,6 +53,11 @@ registerLocaleData(pt);
   ],
   providers: [IconDirective,IconSetService, { provide: NZ_I18N, useValue: pt_BR },
      provideAnimationsAsync(), provideHttpClient(withInterceptors([authInterceptorInterceptor]))
+    , 
+    {
+      provide: CORE_API_URL,
+      useValue: environment.coreApiUrl
+    }
     ],
   bootstrap: [AppComponent]
 })

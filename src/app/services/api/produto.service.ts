@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ProdutoDto, ProdutoReponse } from '../interfaces/produto';
 import { Observable } from 'rxjs';
-import { PageResponse } from '../interfaces/response/PageResponse';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { ProdutoDto } from '../../interfaces/produto';
+import { PageResponse } from '../../interfaces/response/PageResponse';
 
 const API_BASEURL_PRODUTO: string = 'http://localhost:8082/produto';
 @Injectable({
