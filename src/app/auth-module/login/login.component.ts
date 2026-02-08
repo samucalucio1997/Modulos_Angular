@@ -5,6 +5,7 @@ import { StorageServiceService } from '../../services/storage-service.service';
 import { Router } from '@angular/router';
 import { UsuarioResponse } from '../../interfaces/usuario-request';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -70,6 +71,10 @@ export class LoginComponent implements OnInit {
       const control = this.loginForm.get(key);
       control?.markAsTouched();
     });
+  }
+
+  loginWithGoogle(): void {
+
   }
 
   // redirectToManagerAccount(): void {

@@ -23,14 +23,16 @@ export class ProdutoService {
     
     formData.append('produto_id', produtoId.toString()); 
     
-    if (Array.isArray(files)) {
-      files.forEach(file => {
-        if (file.originFileObj) {
-          formData.append('imagens', file.originFileObj);
-        }
-      });
-    } else if (files?.originFileObj) {
-      formData.append('imagens', files.originFileObj);
+    if (files) {
+      if (Array.isArray(files)) {
+        files.forEach(file => {
+          if (file.originFileObj) {
+            formData.append('imagens', file.originFileObj);
+          }
+        });
+      } else if (files?.originFileObj) {
+        formData.append('imagens', files.originFileObj);
+      } 
     }
 
     return this.http.patch<boolean>(`${this.API_URL}/produto/editarProduto`, formData);

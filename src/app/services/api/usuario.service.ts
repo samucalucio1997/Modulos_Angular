@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { LoginResponse, UsuarioResponse } from '../../interfaces/usuario-request';
 import { StorageServiceService } from '../storage-service.service';
+import { GoogleLoginProvider, SocialAuthService } from '@abacritt/angularx-social-login';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { StorageServiceService } from '../storage-service.service';
 export class UsuarioService {
   private http: HttpClient = inject(HttpClient);
   private storageService: StorageServiceService = inject(StorageServiceService);
+  private authService : SocialAuthService = inject(SocialAuthService);
   private apiUrl = 'http://localhost:8082';
 
   autenticarUsuario(nomeUsuario: string, senha: string): Observable<LoginResponse> {
@@ -22,6 +24,11 @@ export class UsuarioService {
       body.toString(),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
+  }
+
+  autenticarComGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
+    .then()
   }
 
   validarToken(token: String): Observable<boolean>{  
@@ -38,4 +45,5 @@ export class UsuarioService {
     return this.http.get(`${this.apiUrl}/auth/refresh`, { headers, responseType: 'text' });
   }
 
+  
 }
