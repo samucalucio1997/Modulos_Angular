@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { ProdutoDto } from '../../interfaces/produto';
 import { PageResponse } from '../../interfaces/response/PageResponse';
+import { CORE_API_URL } from './core.constants';
 
 const API_BASEURL_PRODUTO: string = 'http://localhost:8082/produto';
 @Injectable({
@@ -11,34 +12,57 @@ const API_BASEURL_PRODUTO: string = 'http://localhost:8082/produto';
 })
 export class ProdutoService {
   
-  private http: HttpClient = inject(HttpClient);
-  
-    cadastrarProduto(
-      produto: ProdutoDto,
-      files?: NzUploadFile | NzUploadFile[]
-    ): Observable<boolean> {
+  private API_URL: String = inject(CORE_API_URL);
 
-      const formData = new FormData();
-      
-      formData.append(
-        'produto',
-        new Blob([JSON.stringify(produto)], { type: 'application/json' })
-      );
+  private http: HttpClient = inject(HttpClient);
+
+  editarProduto(produtoId: number, produto: ProdutoDto, files?: NzUploadFile | NzUploadFile[]) : Observable<boolean> {
+    let formData = new FormData();
+
+    formData.append('produto', new Blob([JSON.stringify(produto)], { type: 'application/json' }));
     
-      if (Array.isArray(files)) {
-        files.forEach(file => {
-          if (file.originFileObj) {
+    formData.append('produto_id', produtoId.toString()); 
+    
+    if (Array.isArray(files)) {
+      files.forEach(file => {
+        if (file.originFileObj) {
+          formData.append('imagens', file.originFileObj);
+        }
+      });
+    } else if (files?.originFileObj) {
+      formData.append('imagens', files.originFileObj);
+    }
+
+    return this.http.patch<boolean>(`${this.API_URL}/produto/editarProduto`, formData);
+  }
+
+  
+  cadastrarProduto(
+     produto: ProdutoDto,
+     files?: NzUploadFile | NzUploadFile[]
+  ): Observable<boolean> {
+
+     const formData = new FormData();
+     
+     formData.append(
+       'produto',
+       new Blob([JSON.stringify(produto)], { type: 'application/json' })
+     );
+   
+     if (Array.isArray(files)) {
+       files.forEach(file => {
+         if (file.originFileObj) {
             formData.append('img', file.originFileObj);
-          }
-        });
-      } else if (files?.originFileObj) {
-        formData.append('img', files.originFileObj);
-      }
-    
-      return this.http.post<boolean>(
-        `${API_BASEURL_PRODUTO}/cadastraProduto`,
-        formData
-      );
+         }
+       });
+     } else if (files?.originFileObj) {
+       formData.append('img', files.originFileObj);
+     }
+   
+     return this.http.post<boolean>(
+       `${API_BASEURL_PRODUTO}/cadastraProduto`,
+       formData
+     );
   }
 
   getProdutoList(categoria: string | null, precoMin?: number | null, precoMax?: number | null, pageIndex: number = 0, pageSize: number = 0): Observable<PageResponse<ProdutoDto>> {

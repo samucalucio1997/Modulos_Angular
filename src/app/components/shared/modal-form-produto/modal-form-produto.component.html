@@ -1,7 +1,6 @@
 <form [formGroup]="produtoForm">
   <div class="row">
     <div class="col-12 mb-3">
-      <!-- <label for="descricao" class="form-label">Descrição</label> -->
       <nz-upload
           nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           nzListType="picture-card"
@@ -15,16 +14,14 @@
         </div>
       </nz-upload>
       <nz-modal
-        [(nzVisible)]="previewVisible"
-        [nzFooter]="null"
+       [nzVisible]="previewVisible"
+      [nzContent]="modalContent"
+      [nzFooter]="null"
+      (nzOnCancel)="previewVisible = false"
       >
-        <ng-container *nzModalContent>
-        
-          <div *ngFor="let img of imagensProduto">
-              <img [src]="getImage(img)" style="width: 100%" />
-          </div>
-          
-        </ng-container>
+        <ng-template #modalContent>
+          <img [src]="previewImage" style="width: 100%" />
+        </ng-template>
       </nz-modal>
     </div>
   </div>
@@ -81,6 +78,6 @@
   </div>
   <div *nzModalFooter>
     <button nz-button nzType="default" (click)="handleCancel()">Cancelar</button>
-    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isLoading">Cadastrar</button>
+    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isLoading">{{nzModalData != null ? 'Editar' : 'Cadastrar'}}</button>
   </div>
 </form>

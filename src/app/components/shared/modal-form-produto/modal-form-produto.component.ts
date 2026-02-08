@@ -50,10 +50,10 @@ export class ModalFormProdutoComponent implements OnInit{
         //   uid: String(imagensDto.id),
         //   name: imagensDto.path,
         //   url: `http://localhost:8082/files/img?nomeArquivo=${imagensDto.path}`
-        // }
+        // };
         // this.fileList.push(image);
 
-        this.addImagemLista(this.produtoForm, this.fileList);
+        this.addImagemLista(this.produtoForm);
 
       } else {
         this.produtoForm = this.frm.group({
@@ -74,22 +74,12 @@ export class ModalFormProdutoComponent implements OnInit{
     }
 
     async handlePreview(file: NzUploadFile): Promise<void> {
-      if (!file.url) {
-        await this.fileUtil.getBase64(file.originFileObj!);
+      if (!file.url && file.originFileObj) {
+        file.url = (await this.fileUtil.getBase64(file.originFileObj)) as string;
       }
-      this.previewImage = file.url;
+      this.previewImage = file.url || '';
       this.previewVisible = true;
       console.log(this.previewImage);
-    }
-
-    resolveImage(img: any): string {
-      return this.previewImage
-        ? this.previewImage
-        : this.getImage(img);
-    }
-
-    getImage(img: any): string {
-      return `${CORE_API_URL}/files/img?nomeArquivo=${img.nomeArquivo}`;
     }
 
     handleOk(): void {
@@ -103,32 +93,59 @@ export class ModalFormProdutoComponent implements OnInit{
          categoria: this.produtoForm.get('categoriaSelecionada')?.value as CategoriProduto
        };
 
-       this.produtoService.cadastrarProduto(produto, this.fileList)
-       .subscribe(
-        (resp) => { 
-          console.log(resp);
-          this.nzMessageService.success("Cadastro feito com sucesso");            
-          this.modal.close();
-        },
-        err => {
-          console.log(err);
-          this.nzMessageService.error("Erro no cadastro!")
-          this.isLoading = false;
-        },
-        () => {
-            this.produtoForm = this.frm.group({
-                nome: ['', Validators.required],
-                codigo: ['', Validators.required],
-                quantidade: [1],
-                precoUni: [0.0, Validators.required],
-                descricao: ['', Validators.required],
-                foto: this.frm.array([]),
-                categoriaSelecionada: ['', Validators.required]
-            });
-            this.isLoading = false;
-        }
-      );
-      
+       if(!this.nzModalData){
+          this.produtoService.cadastrarProduto(produto, this.fileList)
+          .subscribe(
+           (resp) => { 
+             console.log(resp);
+             this.nzMessageService.success("Cadastro feito com sucesso");            
+             this.modal.close();
+           },
+           err => {
+             console.log(err);
+             this.nzMessageService.error("Erro no cadastro!")
+             this.isLoading = false;
+           },
+           () => {
+               this.produtoForm = this.frm.group({
+                   nome: ['', Validators.required],
+                   codigo: ['', Validators.required],
+                   quantidade: [1],
+                   precoUni: [0.0, Validators.required],
+                   descricao: ['', Validators.required],
+                   foto: this.frm.array([]),
+                   categoriaSelecionada: ['', Validators.required]
+               });
+               this.isLoading = false;
+           }
+        );
+       } else {
+          //TODO: chamar o metodo de editar ddo produto.service
+          this.produtoService.editarProduto(produto.id || 0, produto, this.fileList)
+          .subscribe(e => {
+            this.nzMessageService.success("Cadastro feito com sucesso");            
+            this.modal.close();
+          },
+          err => {
+             console.log(err);
+             this.nzMessageService.error("Erro ao editar produto")
+             this.isLoading = false;
+           },
+           () => {
+               this.produtoForm = this.frm.group({
+                   nome: ['', Validators.required],
+                   codigo: ['', Validators.required],
+                   quantidade: [1],
+                   precoUni: [0.0, Validators.required],
+                   descricao: ['', Validators.required],
+                   foto: this.frm.array([]),
+                   categoriaSelecionada: ['', Validators.required]
+               });
+               this.isLoading = false;
+           })
+          ;
+       }
+    
     }
 
     getCategoriaNome(categoria: string): string {
@@ -138,13 +155,16 @@ export class ModalFormProdutoComponent implements OnInit{
       return typeof categoria === 'string' ? categoria : (CategoriProduto as any)[categoria];
     }
 
-    addImagemLista(produtoForm: FormGroup, fileList: NzUploadFile[]):void {
+    addImagemLista(produtoForm: FormGroup):void {
       const imagensDto: ImagemProdutoDTO = produtoForm.get('foto')?.value as ImagemProdutoDTO;
       const image: NzUploadFile = {
           uid: String(imagensDto.id),
           name: imagensDto.path,
           url: `${CORE_API_URL}/files/img?nomeArquivo=${imagensDto.path}`
-        }
-        fileList.push(image);
+        };
+
+        console.log('imagem aqui' + image);
+
+        this.fileList.push(image);
     }
 }
