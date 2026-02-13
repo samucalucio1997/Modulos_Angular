@@ -21,9 +21,16 @@ export class LoginComponent implements OnInit {
   private storageService: StorageServiceService = inject(StorageServiceService);
   private router: Router = inject(Router);
   private message = inject(NzMessageService);
+  private authService: SocialAuthService = inject(SocialAuthService);
 
   ngOnInit(): void {
     this.initializeForm();
+
+    this.authService.authState.subscribe(user => {
+      if (!user) return;
+      const idToken = user.idToken;
+      this.usuarioService.autenticarComGoogle(idToken);
+    });
   }
 
   private initializeForm(): void {
@@ -73,9 +80,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  loginWithGoogle(): void {
-
-  }
+  // loginWithGoogle(): void {
+  //   this.usuarioService.autenticarComGoogle();
+  // }
 
   // redirectToManagerAccount(): void {
   //   const usuarioResponse:UsuarioResponse = this.storageService.getItem('login') as UsuarioResponse;

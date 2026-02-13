@@ -5,6 +5,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 
 import { AuthModuleRoutingModule } from './auth-module-routing.module';
 import { LoginComponent } from './login/login.component';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { LoginComponent } from './login/login.component';
     CommonModule,
     AuthModuleRoutingModule,
     ReactiveFormsModule,
+    GoogleSigninButtonModule,
     FormsModule,
     NzMessageModule
   ]

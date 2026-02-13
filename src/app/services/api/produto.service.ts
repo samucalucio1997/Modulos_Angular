@@ -17,12 +17,14 @@ export class ProdutoService {
   private http: HttpClient = inject(HttpClient);
 
   editarProduto(produtoId: number, produto: ProdutoDto, files?: NzUploadFile | NzUploadFile[]) : Observable<boolean> {
-    let formData = new FormData();
+    const formData = new FormData();
+    const params = new HttpParams()
+    .set('produto_id', String(produtoId))
+    .set('nome', String());
 
-    formData.append('produto', new Blob([JSON.stringify(produto)], { type: 'application/json' }));
-    
-    formData.append('produto_id', produtoId.toString()); 
-    
+    // formData.append('produto_id', new File([String(produtoId)], '', { type: 'text/plain' }));
+    // formData.append('produto', new File([JSON.stringify(produto)], 'produto.json', { type: 'application/json' }));
+
     if (files) {
       if (Array.isArray(files)) {
         files.forEach(file => {
@@ -32,10 +34,13 @@ export class ProdutoService {
         });
       } else if (files?.originFileObj) {
         formData.append('imagens', files.originFileObj);
-      } 
+      }
     }
 
-    return this.http.patch<boolean>(`${this.API_URL}/produto/editarProduto`, formData);
+    return this.http.request<boolean>('PATCH', `${this.API_URL}/produto/editarProduto`, {
+      body: formData,
+      responseType: 'json',
+    });
   }
 
   
@@ -48,7 +53,7 @@ export class ProdutoService {
      
      formData.append(
        'produto',
-       new Blob([JSON.stringify(produto)], { type: 'application/json' })
+       new File([JSON.stringify(produto)], 'produto.json', { type: 'application/json' })
      );
    
      if (Array.isArray(files)) {

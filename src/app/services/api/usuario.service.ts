@@ -26,9 +26,21 @@ export class UsuarioService {
     );
   }
 
-  autenticarComGoogle(): void {
+  autenticarComGoogle(idToken: string): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
-    .then()
+    .then(user => {
+
+      const idToken = user.idToken;
+      console.log(user);
+
+      this.http.post<any>('http://localhost:8082/auth/google', {
+        token: idToken
+      }).subscribe(res => {
+
+        this.storageService.setItem('token', res.token);
+
+      });
+    });
   }
 
   validarToken(token: String): Observable<boolean>{  
