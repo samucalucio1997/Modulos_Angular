@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     
     const authCodeFlowConfig: AuthConfig = {
       issuer: 'https://accounts.google.com',
-      clientId: '5118366054-brr6mo7bfp8rhbcjp9js2q88ib99up0r.apps.googleusercontent.com',
+      clientId: '',
       redirectUri: window.location.origin + '/welcome/dashboard',
       logoutUrl: window.location.origin,
       strictDiscoveryDocumentValidation: false
