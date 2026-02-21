@@ -12,11 +12,15 @@ export class Permission {
     
 
     getPermission():  ModuloItem[] {
-        const usuarioLogado: UsuarioResponse = this.storageLocalService.getItem('login') as UsuarioResponse;
-        
-        let perfil: string = usuarioLogado.role;
+        const isAutenticacaoJWT = this.storageLocalService.getItem('login') != null;
+        let perfil: string = '';
+        if (isAutenticacaoJWT) {
+            const usuarioLogado: UsuarioResponse = this.storageLocalService.getItem('login') as UsuarioResponse;
+            
+            perfil = usuarioLogado.role;
+        }
 
-        if (!usuarioLogado) {
+        if (perfil == '') {
             perfil = this.oauthService.getIdToken();
         }
 
