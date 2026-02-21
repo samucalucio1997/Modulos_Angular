@@ -13,6 +13,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { IconsProviderModule } from '../../icons-provider.module';
 import { Permission } from '../../function/permision';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { Permission } from '../../function/permision';
         NzLayoutModule,
         NzMenuModule,
         NzTableModule,
+        OAuthModule,
         NzCardModule,
         NzButtonModule,
         IconsProviderModule

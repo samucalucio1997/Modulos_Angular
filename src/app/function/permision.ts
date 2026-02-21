@@ -3,16 +3,23 @@ import { StorageServiceService } from "../services/storage-service.service";
 import { inject } from "@angular/core";
 import { LoginResponse, UsuarioResponse } from "../interfaces/usuario-request";
 import { ModuloItem } from "../interfaces/modulos/modulo-item";
+import { OAuthService } from "angular-oauth2-oidc";
 
 export class Permission {
     public $modulos: Subject<ModuloItem[]> = new Subject<ModuloItem[]>();
     private storageLocalService: StorageServiceService = inject(StorageServiceService);
+    private oauthService: OAuthService = inject(OAuthService);
     
 
     getPermission():  ModuloItem[] {
         const usuarioLogado: UsuarioResponse = this.storageLocalService.getItem('login') as UsuarioResponse;
-        const perfil: string = usuarioLogado.authorities?.at(0)?.authority as string;
         
+        let perfil: string = usuarioLogado.role;
+
+        if (!usuarioLogado) {
+            perfil = this.oauthService.getIdToken();
+        }
+
         const modulosAdmin: ModuloItem[] = [
             {
             moduleName: 'Gerenciar Estoque',
@@ -34,12 +41,12 @@ export class Permission {
         const modulosUser: ModuloItem[] = [
             {
             moduleName: 'Tabela',
-            router: 'tabela',
+            router: '../tabela',
             descricao: 'Visualize e edite tabelas'
             },
             {
             moduleName: 'dashboard',
-            router: 'dashboard',
+            router: '../dashboard',
             descricao: 'Painel de controle e estatísticas'
             }
         ];

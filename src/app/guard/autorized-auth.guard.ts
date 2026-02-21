@@ -5,8 +5,8 @@ import { LoginResponse, UsuarioResponse } from '../interfaces/usuario-request';
 
 export const autorizedAuthGuard: CanActivateFn = (route, state) => {
   const storageLocalService: StorageServiceService = inject(StorageServiceService);
-  const loginResponse:UsuarioResponse = storageLocalService.getItem('login') as UsuarioResponse;
-  const authorities:string = loginResponse.authorities?.at(0)?.authority as string ;
+  const loginResponse: UsuarioResponse = storageLocalService.getItem('login') as UsuarioResponse;
+  const authorities: string = loginResponse.role as string ;
   
   return authorities === 'ROLE_ADMIN';
 };

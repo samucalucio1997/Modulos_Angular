@@ -4,6 +4,7 @@ import { ModuloItem } from '../../interfaces/modulos/modulo-item';
 import { Permission } from '../../function/permision';
 import { StorageServiceService } from '../../services/storage-service.service';
 import { Router } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-welcome',
@@ -16,7 +17,8 @@ export class WelcomeComponent implements OnInit {
   private storageService: StorageServiceService = inject(StorageServiceService);
   public modulos: ModuloItem[] = [];
   public permision: Permission = inject(Permission);
-  private router: Router = inject(Router)
+  private oauthService: OAuthService = inject(OAuthService);
+  private router: Router = inject(Router);
 
   constructor() { }
 
@@ -29,6 +31,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   handlerLogOut(): void {
+    this.oauthService.logOut();
     this.storageService.removeItem('login');
     console.log(this.storageService.getItem('login'));
     this.router.navigate(['/login']);

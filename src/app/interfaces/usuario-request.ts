@@ -2,14 +2,20 @@ export interface UsuarioResponse {
     id: number;
     nome: String;
     email?: String;
-    authorities?: Authority[];
+    role: string;
 }
 
 export interface LoginResponse {
     token: String;
-    user: UsuarioResponse;
+    usuarioDto?: UsuarioResponse;
+    googleUsuario?: GoogleUsuario;
 }
 
 export interface Authority {
     authority: string;
+}
+
+export interface GoogleUsuario {
+    email: string;
+    name: string;
 }

@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { LoginResponse, UsuarioResponse } from '../../interfaces/usuario-request';
 import { StorageServiceService } from '../storage-service.service';
-import { GoogleLoginProvider, SocialAuthService } from '@abacritt/angularx-social-login';
+import { CORE_API_URL } from './core.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -11,39 +11,28 @@ import { GoogleLoginProvider, SocialAuthService } from '@abacritt/angularx-socia
 export class UsuarioService {
   private http: HttpClient = inject(HttpClient);
   private storageService: StorageServiceService = inject(StorageServiceService);
-  private authService : SocialAuthService = inject(SocialAuthService);
+  private API_URL: String = inject(CORE_API_URL);
   private apiUrl = 'http://localhost:8082';
 
   autenticarUsuario(nomeUsuario: string, senha: string): Observable<LoginResponse> {
-    const body = new HttpParams()
+    const params = new HttpParams()
       .set('username', nomeUsuario)
       .set('password', senha);
-  
+
     return this.http.post<LoginResponse>(
-      this.apiUrl + '/auth/login',
-      body.toString(),
+      `${this.API_URL}/auth/login`,
+      params.toString(),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
   }
 
-  autenticarComGoogle(idToken: string): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
-    .then(user => {
-
-      const idToken = user.idToken;
-      console.log(user);
-
-      this.http.post<any>('http://localhost:8082/auth/google', {
-        token: idToken
-      }).subscribe(res => {
-
-        this.storageService.setItem('token', res.token);
-
-      });
-    });
+  autenticarComGoogle(token: string): Observable<LoginResponse> {
+      const params = new HttpParams()
+      .set('token', token);
+      return this.http.post<LoginResponse>(`${this.API_URL}/auth/google`, params.toString());
   }
 
-  validarToken(token: String): Observable<boolean>{  
+  validarToken(token: String): Observable<boolean> {
     return this.http.post<boolean>(this.apiUrl + '/auth/validate', { token });
   }
 
@@ -57,5 +46,4 @@ export class UsuarioService {
     return this.http.get(`${this.apiUrl}/auth/refresh`, { headers, responseType: 'text' });
   }
 
-  
 }

@@ -26,7 +26,7 @@ import { IconsProviderModule } from './icons-provider.module';
 import { authInterceptorInterceptor } from './middleware/auth-interceptor.interceptor';
 import { environment } from './enviroments/enviroments';
 import { CORE_API_URL } from './services/api/core.constants';
-import { GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
+import { OAuthModule, provideOAuthClient } from 'angular-oauth2-oidc';
 
 registerLocaleData(pt);
 
@@ -42,12 +42,12 @@ registerLocaleData(pt);
     NzMenuModule,
     NzTableModule,
     NzCardModule,
+    OAuthModule,
     NzSelectModule,
     NzInputNumberModule,
     NzButtonModule,
     NzTagModule,
     NzIconModule,
-    SocialLoginModule,
     NzEmptyModule,
     NzTypographyModule,
     IconsProviderModule
@@ -59,24 +59,7 @@ registerLocaleData(pt);
       provide: CORE_API_URL,
       useValue: environment.coreApiUrl
     },
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        lang: 'en',
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '5118366054-brr6mo7bfp8rhbcjp9js2q88ib99up0r.apps.googleusercontent.com'
-            )
-          }
-        ],
-        onError: (err) => {
-          console.error(err);
-        }
-      } as SocialAuthServiceConfig,
-    }
+    provideOAuthClient()
     ],
   bootstrap: [AppComponent]
 })

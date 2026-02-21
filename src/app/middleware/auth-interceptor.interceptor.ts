@@ -3,20 +3,20 @@ import { StorageServiceService } from '../services/storage-service.service';
 import { UsuarioService } from '../services/api/usuario.service';
 import { inject } from '@angular/core';
 import { catchError, switchMap, tap, throwError } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   const storageService = inject(StorageServiceService);
   const usuarioService = inject(UsuarioService);
+  const oauthService: OAuthService = inject(OAuthService);
 
-  const token = storageService.getItemString('token') ?? '';
+  const token = storageService.getItemString('token') ?? oauthService.getIdToken();
   const isRefreshRequest = req.headers.get('x-skip-refresh') === 'true';
 
-  // Não adiciona token na requisição de login
-  if (req.url.includes('/auth/login')) {
+  if (req.url.includes('/auth/login') || req.url.includes('accounts.google.com')) {
     return next(req);
   }
 
-  // Clona com Authorization se tiver token
   let authReq = req;
   if (token) {
     authReq = req.clone({
