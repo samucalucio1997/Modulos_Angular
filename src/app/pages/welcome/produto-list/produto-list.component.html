@@ -1,0 +1,65 @@
+<div class="container-fluid">
+    <div class="row mb-4">
+      <div class="col-12">
+        <nz-card nzTitle="Filtros" [nzBordered]="false" [formGroup]="formProdutoFilter">
+           <div class="row">
+            <div class="col-md-3 mb-3">
+              <label nz-typography>Filtrar por Categoria:</label>
+              <nz-select
+                formControlName="categoriaSelecionada"
+                nzPlaceHolder="Selecione uma categoria"
+                nzAllowClear
+                style="width: 100%">
+                <nz-option nzValue="null" nzLabel="Todas as categorias"></nz-option>
+                <nz-option 
+                  *ngFor="let categoria of categorias | keyvalue" 
+                  [nzValue]="categoria.value" 
+                  [nzLabel]="categoria.value">
+                </nz-option>
+              </nz-select>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label nz-typography>Preço Mínimo:</label>
+              <nz-input-number
+                formControlName="precoMinimo"
+                nzPlaceHolder="Preço mínimo"
+                [nzMin]="0"
+                [nzStep]="0.01"
+                style="width: 100%">
+              </nz-input-number>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label nz-typography>Preço Máximo:</label>
+              <nz-input-number
+                formControlName="precoMaximo"
+                nzPlaceHolder="Preço máximo"
+                [nzMin]="0"
+                [nzStep]="0.01"
+                style="width: 100%">
+              </nz-input-number>
+            </div>
+
+            <div class="col-md-3 mb-3 d-flex align-items-end">
+              <button 
+                nz-button 
+                nzType="default" 
+                nzSize="large"
+                (click)="limparFiltros()"
+                style="width: 100%">
+                <i nz-icon nzType="clear" nzTheme="outline"></i>
+                Limpar Filtros
+              </button>
+            </div>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+    <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
+        <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com" />
+    </nz-card>
+    <ng-template #coverTemplate>
+        <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+    </ng-template>
+</div>
