@@ -15,9 +15,9 @@
       </nz-upload>
       <nz-modal
        [nzVisible]="previewVisible"
-      [nzContent]="modalContent"
-      [nzFooter]="null"
-      (nzOnCancel)="previewVisible = false"
+       [nzContent]="modalContent"
+       [nzFooter]="null"
+       (nzOnCancel)="previewVisible = false"
       >
         <ng-template #modalContent>
           <img [src]="previewImage" style="width: 100%" />

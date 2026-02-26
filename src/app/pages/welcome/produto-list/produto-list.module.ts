@@ -9,6 +9,7 @@ import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzCardModule,
     NzInputNumberModule,
     NzButtonModule,
+    NzPaginationModule,
     NzInputModule,
     ReactiveFormsModule,
     NzSelectModule

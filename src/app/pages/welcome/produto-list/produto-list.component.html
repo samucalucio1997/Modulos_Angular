@@ -6,7 +6,7 @@
             <div class="col-md-3 mb-3">
               <label nz-typography>Filtrar por Categoria:</label>
               <nz-select
-                formControlName="categoriaSelecionada"
+                formControlName="categoria"
                 nzPlaceHolder="Selecione uma categoria"
                 nzAllowClear
                 style="width: 100%">
@@ -56,10 +56,14 @@
         </nz-card>
       </div>
     </div>
-    <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
-        <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com" />
-    </nz-card>
-    <ng-template #coverTemplate>
-        <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
-    </ng-template>
+    @for (item of listaProdutos; track $index) {
+      <nz-card nzHoverable style="width:240px" [nzCover]="coverTemplate">
+          <nz-card-meta [nzTitle]="item.nome" [nzDescription]="item.descricao" />
+      </nz-card>
+      <ng-template #coverTemplate>
+          <img alt="example" [src]="item.imagens ? viewImage(item.imagens[0].path) : 'https://i.ytimg.com/vi/OzIzkNkXI5s/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBBIucZANahcsu5D_r30kwWCC208A'" />
+      </ng-template>
+      <button></button>
+    }
+    <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="pageSize" />  
 </div>

@@ -16,6 +16,7 @@ import { CORE_API_URL } from '../../../services/api/core.constants';
 })
 export class ModalFormProdutoComponent implements OnInit{
     readonly nzModalData= inject(NZ_MODAL_DATA);
+    private API_URL: String = inject(CORE_API_URL);
     loadingFile: boolean = false;
     imagensProduto: String[] = [];
     previewVisible: boolean = false;
@@ -45,16 +46,7 @@ export class ModalFormProdutoComponent implements OnInit{
             categoriaSelecionada: this.produtoData?.categoria,
         });
 
-        // const imagensDto: ImagemProdutoDTO = this.produtoForm.get('foto')?.value as ImagemProdutoDTO;//função separada 
-        // const image: NzUploadFile = {
-        //   uid: String(imagensDto.id),
-        //   name: imagensDto.path,
-        //   url: `http://localhost:8082/files/img?nomeArquivo=${imagensDto.path}`
-        // };
-        // this.fileList.push(image);
-
-        this.addImagemLista(this.produtoForm);
-
+        this.addImagemLista();
       } else {
         this.produtoForm = this.frm.group({
             nome: ['', Validators.required],
@@ -120,10 +112,9 @@ export class ModalFormProdutoComponent implements OnInit{
            }
         );
        } else {
-          //TODO: chamar o metodo de editar ddo produto.service
           this.produtoService.editarProduto(produto.id || 0, produto, this.fileList)
           .subscribe(e => {
-            this.nzMessageService.success("Cadastro feito com sucesso");            
+            this.nzMessageService.success("modificação feita com sucesso");            
             this.modal.close();
           },
           err => {
@@ -155,16 +146,18 @@ export class ModalFormProdutoComponent implements OnInit{
       return typeof categoria === 'string' ? categoria : (CategoriProduto as any)[categoria];
     }
 
-    addImagemLista(produtoForm: FormGroup):void {
-      const imagensDto: ImagemProdutoDTO = produtoForm.get('foto')?.value as ImagemProdutoDTO;
+    addImagemLista():void {
+      const imagensDto: ImagemProdutoDTO = this.produtoFoto?.value;
       const image: NzUploadFile = {
-          uid: String(imagensDto.id),
-          name: imagensDto.path,
-          url: `${CORE_API_URL}/files/img?nomeArquivo=${imagensDto.path}`
-        };
+        uid: String(imagensDto.id),
+        name: imagensDto.path,
+        url: `${this.API_URL}/files/img?nomeArquivo=${imagensDto.path}`
+      };
+      
+      this.fileList.push(image);
+    }
 
-        console.log('imagem aqui' + image);
-
-        this.fileList.push(image);
+    get produtoFoto(): FormControl<ImagemProdutoDTO> {
+      return this.produtoForm.get('foto') as FormControl<ImagemProdutoDTO>;
     }
 }

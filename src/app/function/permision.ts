@@ -49,6 +49,11 @@ export class Permission {
             descricao: 'Visualize e edite tabelas'
             },
             {
+                moduleName: 'Produtos',
+                descricao: 'Veja os produtos',
+                router: '../produtos'
+            },
+            {
             moduleName: 'dashboard',
             router: '../dashboard',
             descricao: 'Painel de controle e estatísticas'
