@@ -80,15 +80,15 @@ export class ProdutoListComponent implements OnInit{
   }
 
   getCategoria(): FormControl {
-      return this.formProdutoFilter.get("categoriaSelecionada") as FormControl;
-    }
+    return this.formProdutoFilter.get("categoriaSelecionada") as FormControl;
+  }
   
-    getPrecoMax(): FormControl {
-      return this.formProdutoFilter.get("precoMaximo") as FormControl;
-    }
+  getPrecoMax(): FormControl {
+    return this.formProdutoFilter.get("precoMaximo") as FormControl;
+  }
   
-    getPrecoMinimo(): FormControl {
-      return this.formProdutoFilter.get("precoMinimo") as FormControl;
-    }
+  getPrecoMinimo(): FormControl {
+    return this.formProdutoFilter.get("precoMinimo") as FormControl;
+  }
 
 }
