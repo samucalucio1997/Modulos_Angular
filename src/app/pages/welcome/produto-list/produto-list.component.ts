@@ -24,7 +24,6 @@ export class ProdutoListComponent implements OnInit{
   private produtoService: ProdutoService = inject(ProdutoService);
   listaProdutos: ProdutoDto[] = [];
 
-
   ngOnInit(): void {
     this.formProdutoFilter = this.formBuilder.group({
       precoMinimo: [0.0],
@@ -44,8 +43,7 @@ export class ProdutoListComponent implements OnInit{
         this.listaProdutos = produtosResponse.content;
         this.pageIndex = produtosResponse.number;
         this.pageSize = produtosResponse.size;
-        console.log('aqui a lista de produtos', this.listaProdutos);
-        // this.totalElements = produtosResponse.totalElements;
+        this.totalElements = produtosResponse.totalElements;
       },
       error: (err) => {
         console.error('Erro ao carregar produtos:', err);
@@ -65,9 +63,19 @@ export class ProdutoListComponent implements OnInit{
     });
   }
 
-        
+  searchDataPage(page: number): void {
+   this.carregarProdutos(this.getCategoria()?.value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, page - 1, this.pageSize);
+  }
 
-  viewImage(path: string): String {
+  searchDataSize(size: number): void {
+    this.carregarProdutos(this.getCategoria()?.value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, this.pageIndex, size);
+  }     
+
+  viewImage(imagens: ImagemProdutoDTO[]): string {
+    if (imagens.length == 0) {
+       return 'https://www.dialethoseventos.com.br/assets-custom/img/palestrantes/caju-e-castanha-05042025-131414.jpeg'
+    }
+    const path: string = imagens[0].path;
     return `${this.API_URL}/files/img?nomeArquivo=${path}`
   }
 
