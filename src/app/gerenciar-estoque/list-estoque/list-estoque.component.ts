@@ -92,7 +92,6 @@ export class ListEstoqueComponent implements OnInit {
   }
 
   getCategoriaNome(categoria: CategoriProduto): string {
-    // console.log("aqui ta a categoria backend " + CategoriProduto[categoria])
     return 'Desconhecida';
   } 
 

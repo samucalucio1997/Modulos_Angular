@@ -15,6 +15,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'tabela', loadChildren: () => import('../../tabela-paciente/tabela-paciente.module').then(m => m.TabelaModule) },
       { path: 'produtos', loadChildren: () => import('./produto-list/produto-list.module').then(m => m.ProdutoListModule)},
+      { path: 'detalhar-produto', loadChildren: () => import('../detalhar-produto/detalhar-produto.module').then(m => m.DetalharProdutoModule) },
       { path: 'gerenciar-estoque', loadChildren: () => import('../../gerenciar-estoque/gerenciar-estoque.module')
         .then(m => m.GerenciarEstoqueModule), canActivate: [autorizedAuthGuard] }
     ]

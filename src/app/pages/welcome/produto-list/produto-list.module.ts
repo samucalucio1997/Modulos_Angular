@@ -10,6 +10,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NgOptimizedImage } from '@angular/common';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
   ],
   imports: [
     CommonModule,
+    NgOptimizedImage,
     ProdutoListRoutingModule,
     NzCardModule,
     NzInputNumberModule,

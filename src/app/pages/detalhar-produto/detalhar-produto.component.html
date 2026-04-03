@@ -1,1 +1,54 @@
-<p>detalhar-produto works!</p>
+<nz-card nzTitle="Detalhes do Produto" nzBordered>
+    <nz-row [nzGutter]="16">
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8">
+            <img nz-image [src]="viewImage(produtoDto.imagens || [])" alt="Produto" style="width: 100%;">
+        </nz-col>
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="16">
+            <h2>{{ produtoDto.nome }} </h2>
+            <p><strong>Categoria:</strong> {{ produtoDto.categoria }}</p>
+            
+            <nz-divider></nz-divider>
+            
+            <h3 nz-typography nzType="warning">R$ {{ produtoDto.precoUni }}</h3>
+            <!-- <p><strong>Estoque:</strong> <nz-badge [nzCount]="produtoDto.qtd" nzColor="#87d068"></nz-badge></p> -->
+            
+            <nz-divider></nz-divider>
+            
+            <p><strong>Descrição:</strong></p>
+            <p>{{ produtoDto.descricao }}</p>
+            
+            <nz-space>
+                <button nz-button nzType="primary" nzSize="large">
+                    <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
+                    Adicionar ao Carrinho
+                </button>
+                <button nz-button nzSize="large">
+                    <i nz-icon nzType="heart" nzTheme="outline"></i>
+                    Favoritar
+                </button>
+            </nz-space>
+        </nz-col>
+    </nz-row>
+    
+    <!-- <nz-tabset nzType="card" style="margin-top: 24px;">
+        <nz-tab nzTitle="Especificações">
+            <nz-table [nzData]="specifications" nzBordered nzSize="small">
+                <thead>
+                    <tr>
+                        <th>Propriedade</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of specifications">
+                        <td>{{ item.property }}</td>
+                        <td>{{ item.value }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-tab>
+        <nz-tab nzTitle="Avaliações">
+            <p>Avaliações dos clientes em breve.</p>
+        </nz-tab>
+    </nz-tabset> -->
+</nz-card>

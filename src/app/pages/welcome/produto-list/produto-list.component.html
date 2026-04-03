@@ -61,7 +61,7 @@
         <div class="col-md-6 col-lg-4 mb-4">
           <nz-card nzHoverable [nzCover]="coverTemplate">
             <nz-card-meta class="card-description" [nzTitle]="item.nome" [nzDescription]="item.descricao" />
-            <button nz-button nzType="primary"  nzShape="round">
+            <button nz-button nzType="primary" nzShape="round" (click)="detalharProduto(item)">
               detalhes
             </button>
           </nz-card>

@@ -14,11 +14,13 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { IconsProviderModule } from '../../icons-provider.module';
 import { Permission } from '../../function/permision';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { DetalharProdutoModule } from '../detalhar-produto/detalhar-produto.module';
 
 
 @NgModule({
   imports: [WelcomeRoutingModule,
         CommonModule,
+        DetalharProdutoModule,
         ReactiveFormsModule,
         NzLayoutModule,
         NzMenuModule,

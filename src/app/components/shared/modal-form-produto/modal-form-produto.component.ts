@@ -15,7 +15,7 @@ import { CORE_API_URL } from '../../../services/api/core.constants';
   styleUrls: ['./modal-form-produto.component.css']
 })
 export class ModalFormProdutoComponent implements OnInit{
-    readonly nzModalData= inject(NZ_MODAL_DATA);
+    readonly nzModalData = inject(NZ_MODAL_DATA);
     private API_URL: String = inject(CORE_API_URL);
     loadingFile: boolean = false;
     imagensProduto: String[] = [];
@@ -35,7 +35,8 @@ export class ModalFormProdutoComponent implements OnInit{
   
     ngOnInit(): void {
       if (this.nzModalData) {
-        this.produtoData = this.nzModalData.produto;
+        this.produtoData = this.nzModalData.produto as ProdutoDto;
+        console.log('assim está vindo a lista de url imagens' + this.produtoData);
         this.produtoForm = this.frm.group({
             nome: this.produtoData?.nome,
             codigo: this.produtoData?.id,
@@ -148,10 +149,11 @@ export class ModalFormProdutoComponent implements OnInit{
 
     addImagemLista():void {
       const imagensDto: ImagemProdutoDTO = this.produtoFoto?.value;
+      const nomeEncoded = encodeURIComponent(imagensDto.path);
       const image: NzUploadFile = {
         uid: String(imagensDto.id),
         name: imagensDto.path,
-        url: `${this.API_URL}/files/img?nomeArquivo=${imagensDto.path}`
+        url: `${this.API_URL}/files/img?nomeArquivo=${nomeEncoded}`
       };
       
       this.fileList.push(image);
