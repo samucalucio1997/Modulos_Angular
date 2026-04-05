@@ -17,6 +17,7 @@ export class ProdutoListComponent implements OnInit {
   private API_URL: String = inject(CORE_API_URL);
   formBuilder: FormBuilder = inject(FormBuilder);
   private route: Router = inject(Router);
+  effect = 'scrollx';
   carregando: boolean = false;
   public pageIndex: number = 1;
   public pageSize: number = 10;
@@ -77,12 +78,14 @@ export class ProdutoListComponent implements OnInit {
     this.carregarProdutos(this.getCategoria()?.value || '', this.getPrecoMinimo()?.value || 0, this.getPrecoMax()?.value || 0, this.pageIndex, size);
   }
 
-  viewImage(imagens: ImagemProdutoDTO[]): string {
-    if (imagens.length == 0) {
-      return 'https://www.dialethoseventos.com.br/assets-custom/img/palestrantes/caju-e-castanha-05042025-131414.jpeg'
+  viewImage(imagem: ImagemProdutoDTO): string {
+    console.log('imagem que está sendo processada => ', imagem);
+    if (imagem) {
+      const path: string = encodeURIComponent(imagem.path);
+      return `${this.API_URL}/files/img?nomeArquivo=${path}`;
     }
-    const path: string = imagens[0].path;
-    return `${this.API_URL}/files/img?nomeArquivo=${path}`
+
+    return 'https://www.dialethoseventos.com.br/assets-custom/img/palestrantes/caju-e-castanha-05042025-131414.jpeg';
   }
 
   getCategoria(): FormControl {

@@ -59,21 +59,25 @@
     <div class="row">
       @for (item of listaProdutos; track $index) {
         <div class="col-md-6 col-lg-4 mb-4">
-          <nz-card nzHoverable [nzCover]="coverTemplate">
+          <nz-card nzHoverable>
+            <!-- <nz-carousel> -->
+              @for(img of item.imagens; track img.id){
+                <div nz-carousel-content>
+                  <img [src]="viewImage(img)" />
+                </div>
+              }
+            <!-- </nz-carousel> -->
             <nz-card-meta class="card-description" [nzTitle]="item.nome" [nzDescription]="item.descricao" />
             <button nz-button nzType="primary" nzShape="round" (click)="detalharProduto(item)">
               detalhes
             </button>
           </nz-card>
-          <ng-template #coverTemplate>
-            <img [alt]="item.descricao" [src]="viewImage(item.imagens || [])" />
-          </ng-template>
         </div>
       }
     </div>
     <nz-pagination 
       [nzPageIndex]="pageIndex" 
-      [nzTotal]="pageSize"
+      [nzPageSize]="pageSize"
       [nzTotal]="totalElements" 
       (nzPageIndexChange)="searchDataPage($event)"
       (nzPageSizeChange)="searchDataSize($event)"

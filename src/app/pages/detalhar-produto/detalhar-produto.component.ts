@@ -24,15 +24,17 @@ export class DetalharProdutoComponent implements OnInit{
 
   ngOnInit(): void {
     const params = this.route.snapshot.queryParams;
-    console.log('recebi esses parametros ', params);
 
     this.produtoDto = {
       nome: params['nome'],
       qtd: Number(params['qtd']),
       precoUni: Number(params['precoUni']),
       descricao: params['descricao'],
-      categoria: params['categoria']
+      categoria: params['categoria'],
+      imagens: params['imagens']
     };
+
+    console.log('no log detalhar produto => ', this.produtoDto);
   }
 
   viewImage(imagens: ImagemProdutoDTO[]): string {
@@ -40,6 +42,8 @@ export class DetalharProdutoComponent implements OnInit{
       return 'https://www.dialethoseventos.com.br/assets-custom/img/palestrantes/caju-e-castanha-05042025-131414.jpeg'
     }
     const path: string = imagens[0].path;
-    return `${this.API_URL}/files/img?nomeArquivo=${path}`
+    const encodeFileKey = encodeURIComponent(path);
+    console.log('imagem do produto que está sendo carregada => ', imagens[0].path);
+    return `${this.API_URL}/files/img?nomeArquivo=${encodeFileKey}`
   }
 }

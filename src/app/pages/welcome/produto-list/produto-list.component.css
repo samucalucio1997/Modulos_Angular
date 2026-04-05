@@ -2,6 +2,50 @@
   padding: 20px;
 }
 
+/* container da imagem
+.image-container {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #f5f5f5;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+
+.image-container nz-carousel {
+  width: 100%;
+  height: 100%;
+}
+
+
+.image-container .slick-slider,
+.image-container .slick-list,
+.image-container .slick-track,
+.image-container .slick-slide {
+  height: 100%;
+} */
+
+/* cada slide */
+[nz-carousel-content] {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* imagem */
+[nz-carousel-content] img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* hover 
+.product-card:hover img {
+  transform: scale(1.05);
+}
+*/
 .card-description {
   padding-bottom: 5%;
 }

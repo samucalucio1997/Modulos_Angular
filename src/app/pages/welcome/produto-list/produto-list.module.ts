@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProdutoListRoutingModule } from './produto-list-routing.module';
 import { ProdutoListComponent } from './produto-list.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
@@ -27,7 +28,8 @@ import { NgOptimizedImage } from '@angular/common';
     NzPaginationModule,
     NzInputModule,
     ReactiveFormsModule,
-    NzSelectModule
+    NzSelectModule,
+    NzCarouselModule
 ]
 })
 export class ProdutoListModule { }
