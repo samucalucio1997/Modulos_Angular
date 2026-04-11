@@ -38,6 +38,7 @@ export class ModalFormProdutoComponent implements OnInit{
         this.produtoData = this.nzModalData.produto as ProdutoDto;
         console.log('assim está vindo a lista de url imagens' + this.produtoData);
         this.produtoForm = this.frm.group({
+            id: this.produtoData.id,
             nome: this.produtoData?.nome,
             codigo: this.produtoData?.id,
             precoUni: this.produtoData?.precoUni,
@@ -78,6 +79,7 @@ export class ModalFormProdutoComponent implements OnInit{
     handleOk(): void {
       this.isLoading = true;
       const produto: ProdutoDto = {
+         id: this.produtoForm.get('id')?.value,
          nome: this.produtoForm.get('nome')?.value,
          qtd: this.produtoForm.get('quantidade')?.value,
          precoUni: this.produtoForm.get('precoUni')?.value,
@@ -113,17 +115,24 @@ export class ModalFormProdutoComponent implements OnInit{
            }
         );
        } else {
-          this.produtoService.editarProduto(produto.id || 0, produto, this.fileList)
-          .subscribe(e => {
+          this.produtoService.editarProduto(produto.id || 0, 
+            produto.nome,
+            produto.qtd,
+            produto.categoria,
+            produto.precoUni,
+            produto.descricao,
+            this.fileList)
+          .subscribe({
+           next: e => {
             this.nzMessageService.success("modificação feita com sucesso");            
             this.modal.close();
-          },
-          err => {
+           },
+           error: err => {
              console.log(err);
              this.nzMessageService.error("Erro ao editar produto")
              this.isLoading = false;
            },
-           () => {
+           complete: () => {
                this.produtoForm = this.frm.group({
                    nome: ['', Validators.required],
                    codigo: ['', Validators.required],
@@ -132,12 +141,12 @@ export class ModalFormProdutoComponent implements OnInit{
                    descricao: ['', Validators.required],
                    foto: this.frm.array([]),
                    categoriaSelecionada: ['', Validators.required]
-               });
+               }
+              );
                this.isLoading = false;
-           })
-          ;
+           },
+       });
        }
-    
     }
 
     getCategoriaNome(categoria: string): string {

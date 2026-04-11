@@ -16,16 +16,28 @@ export class ProdutoService {
 
   private http: HttpClient = inject(HttpClient);
 
-  editarProduto(produtoId: number, produto: ProdutoDto, files?: NzUploadFile | NzUploadFile[]) : Observable<boolean> {
+  editarProduto(produtoId: number, 
+    nome: string,
+    qtd: number,
+    categoria: string,
+    precoUni: number,
+    descricao: string,
+    files?: NzUploadFile | NzUploadFile[]) : Observable<boolean> {
     const formData = new FormData();
     const params = new HttpParams()
-    .set('produto_id', String(produtoId))
-    .set('nome', String());
+    .set('produtoId', String(produtoId))
+    .set('nome', String(nome))
+    .set('qtd', Number(qtd))
+    .set('categoria', String(categoria))
+    .set('precoUni', Number(precoUni))
+    .set('descricao', String(descricao))
+    ;
 
     // formData.append('produto_id', new File([String(produtoId)], '', { type: 'text/plain' }));
     // formData.append('produto', new File([JSON.stringify(produto)], 'produto.json', { type: 'application/json' }));
 
     if (files) {
+      console.log('verificando a lista de uploads ', Array.isArray(files));
       if (Array.isArray(files)) {
         files.forEach(file => {
           if (file.originFileObj) {
@@ -38,6 +50,7 @@ export class ProdutoService {
     }
 
     return this.http.request<boolean>('PATCH', `${this.API_URL}/produto/editarProduto`, {
+      params: params,
       body: formData,
       responseType: 'json',
     });

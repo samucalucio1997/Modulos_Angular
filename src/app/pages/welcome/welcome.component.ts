@@ -32,8 +32,9 @@ export class WelcomeComponent implements OnInit {
 
   handlerLogOut(): void {
     this.oauthService.logOut();
+    this.storageService.removeItem('token');
     this.storageService.removeItem('login');
-    console.log(this.storageService.getItem('login'));
+    // console.log(this.storageService.getItem('login'));
     this.router.navigate(['/login']);
   }
 

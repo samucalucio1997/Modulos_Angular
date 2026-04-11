@@ -7,6 +7,8 @@ export const autorizedAuthGuard: CanActivateFn = (route, state) => {
   const storageLocalService: StorageServiceService = inject(StorageServiceService);
   const loginResponse: UsuarioResponse = storageLocalService.getItem('login') as UsuarioResponse;
   const authorities: string = loginResponse.role as string ;
+
+  console.log('authories deste usuario => ', authorities);
   
   return authorities === 'ROLE_ADMIN';
 };
