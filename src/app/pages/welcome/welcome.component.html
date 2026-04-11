@@ -1,37 +1,72 @@
 <nz-layout class="app-layout">
-  <nz-sider class="menu-sidebar"
+
+  <!-- SIDEBAR -->
+  <nz-sider
+    class="menu-sidebar"
     nzCollapsible
-    nzWidth="256px"
+    nzWidth="260px"
     nzBreakpoint="md"
     [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null">
+
+    <!-- LOGO -->
     <div class="sidebar-logo">
-      <h1>Sistema E-commerce amigo</h1>
+      <span class="logo-icon">📦</span>
+      <span *ngIf="!isCollapsed" class="logo-text">StockFlow</span>
     </div>
+
+    <!-- MENU -->
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       <li nz-menu-item *ngFor="let modulo of modulos" nzMatchRouter>
-        <a [routerLink]="'/welcome/' + modulo.router">{{ modulo.moduleName }}</a>
+        <span nz-icon nzType="appstore"></span>
+        <span>{{ modulo.moduleName }}</span>
+        <a [routerLink]="'/welcome/' + modulo.router"></a>
       </li>
     </ul>
+
   </nz-sider>
+
+  <!-- CONTEÚDO -->
   <nz-layout>
-    <nz-header>
-      <div class="app-header">
-        <span class="header-trigger" (click)="handleTuggle()">
-            <span class="trigger"
-               nz-icon
-               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            ></span>
+
+    <!-- HEADER -->
+    <nz-header class="app-header">
+
+      <div class="left">
+        <span class="trigger" (click)="handleTuggle()">
+          <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
         </span>
-        <span>
-          <a nz-button nzSize="default" nzType="link" (click)="handlerLogOut()">Sair da conta</a>
-        </span>
+
+        <span class="page-title">Dashboard</span>
       </div>
-    </nz-header>
-      <nz-content>
-        <div class="inner-content">
-          <router-outlet></router-outlet>
+
+      <div class="right">
+
+        <!-- NOTIFICAÇÃO -->
+        <span nz-icon nzType="bell" class="header-icon"></span>
+
+        <!-- USUÁRIO -->
+        <div class="user-box">
+          <span nz-icon nzType="user"></span>
+          <span class="username">Samuel</span>
         </div>
-      </nz-content>
+
+        <!-- LOGOUT -->
+        <button nz-button nzType="link" (click)="handlerLogOut()">
+          Sair
+        </button>
+
+      </div>
+
+    </nz-header>
+
+    <!-- CONTENT -->
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+
   </nz-layout>
+
 </nz-layout>

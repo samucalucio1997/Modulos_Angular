@@ -8,8 +8,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   
   const loginResponse: string = storageService.getItemString('token') as string;
 
-  console.log('esse token do login com o google')
-  
   if (loginResponse != '') {
     return true;
   }

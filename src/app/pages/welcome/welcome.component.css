@@ -1,0 +1,95 @@
+/* LAYOUT BASE */
+.app-layout {
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.menu-sidebar {
+  background: #0f172a !important;
+}
+
+/* LOGO */
+.sidebar-logo {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 22px;
+}
+
+.logo-text {
+  transition: 0.3s;
+}
+
+/* MENU */
+::ng-deep .ant-menu-dark {
+  background: #0f172a;
+}
+
+::ng-deep .ant-menu-item-selected {
+  background: linear-gradient(135deg, #5b6cff, #7b3fe4) !important;
+}
+
+/* HEADER */
+.app-header {
+  background: #ffffff;
+  padding: 0 20px;
+  border-bottom: 1px solid #eee;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LEFT */
+.app-header .left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.page-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* RIGHT */
+.app-header .right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* ICONES */
+.header-icon {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* USER */
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.username {
+  font-weight: 500;
+}
+
+/* CONTENT */
+.inner-content {
+  margin: 20px;
+  padding: 24px;
+  background: #f5f7fb;
+  min-height: calc(100vh - 64px);
+  border-radius: 10px;
+}
