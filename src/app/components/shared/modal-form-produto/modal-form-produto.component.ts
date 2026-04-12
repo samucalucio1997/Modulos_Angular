@@ -47,6 +47,8 @@ export class ModalFormProdutoComponent implements OnInit{
             descricao: this.produtoData?.descricao,
             categoriaSelecionada: this.produtoData?.categoria,
         });
+        
+        console.log('numeros de elementos na lista', this.produtoData.imagens?.length);
 
         this.addImagemLista();
       } else {
@@ -157,18 +159,25 @@ export class ModalFormProdutoComponent implements OnInit{
     }
 
     addImagemLista():void {
-      const imagensDto: ImagemProdutoDTO = this.produtoFoto?.value;
-      const nomeEncoded = encodeURIComponent(imagensDto.path);
-      const image: NzUploadFile = {
-        uid: String(imagensDto.id),
-        name: imagensDto.path,
-        url: `${this.API_URL}/files/img?nomeArquivo=${nomeEncoded}`
-      };
-      
-      this.fileList.push(image);
+      const imagensDto: ImagemProdutoDTO[] = this.produtoData?.imagens || [];
+      console.log('verificando se há imagens no forms', imagensDto)
+      imagensDto.forEach(imagem => {
+        const nomeEncoded = encodeURIComponent(imagem.path);
+        const image: NzUploadFile = {
+          uid: String(imagem.id),
+          name: imagem.path,
+          url: `${this.API_URL}/files/img?nomeArquivo=${nomeEncoded}`
+        };
+        
+        this.fileList.push(image);
+      });
+
+      console.log('lista de imagens => ', this.fileList);
     }
 
-    get produtoFoto(): FormControl<ImagemProdutoDTO> {
-      return this.produtoForm.get('foto') as FormControl<ImagemProdutoDTO>;
+
+
+    get produtoFoto(): FormControl<ImagemProdutoDTO[]> {
+      return this.produtoForm.get('foto') as FormControl<ImagemProdutoDTO[]>;
     }
 }
