@@ -160,7 +160,6 @@ export class ModalFormProdutoComponent implements OnInit{
 
     addImagemLista():void {
       const imagensDto: ImagemProdutoDTO[] = this.produtoData?.imagens || [];
-      console.log('verificando se há imagens no forms', imagensDto)
       imagensDto.forEach(imagem => {
         const nomeEncoded = encodeURIComponent(imagem.path);
         const image: NzUploadFile = {

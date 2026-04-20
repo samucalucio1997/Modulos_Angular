@@ -5,6 +5,7 @@ import { ProdutoDto } from '../../interfaces/produto';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalFormProdutoComponent } from '../../components/shared/modal-form-produto/modal-form-produto.component';
 import { ProdutoService } from '../../services/api/produto.service';
+import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-list-estoque',
@@ -23,7 +24,7 @@ export class ListEstoqueComponent implements OnInit {
   CategoriProduto = CategoriProduto; // Para usar no template
   private produtoService: ProdutoService = inject(ProdutoService);
   private nzModalService: NzModalService = inject(NzModalService);
-  
+  private nzMessageService: NzMessageService = inject(NzMessageService);
   filtrosForm!: FormGroup;
   
   constructor(private fb: FormBuilder) { 
@@ -79,6 +80,18 @@ export class ListEstoqueComponent implements OnInit {
       nzData: {
         produto
       } 
+    });
+  }
+
+  removerProduto(produtoId: number): void {
+    if (produtoId == 0) {
+       return;
+    }
+
+    this.produtoService.removerProduto(produtoId).subscribe({
+      next: () => {
+        this.nzMessageService.success('produto removido com sucesso');
+      }
     });
   }
 

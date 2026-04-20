@@ -106,4 +106,10 @@ export class ProdutoService {
 
     return this.http.get<PageResponse<ProdutoDto>>(`${API_BASEURL_PRODUTO}/produtos`, { params });
   }
+
+  removerProduto(produtoId: number): Observable<Object> {
+    let params: HttpParams = new HttpParams();
+    params = params.set('produtoId', Number(produtoId));
+    return this.http.delete(`${API_BASEURL_PRODUTO}/deletarProduto`,{params: params});
+  }
 }

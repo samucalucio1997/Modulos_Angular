@@ -5,6 +5,7 @@ import { Permission } from '../../function/permision';
 import { StorageServiceService } from '../../services/storage-service.service';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { UsuarioResponse } from '../../interfaces/usuario-request';
 
 @Component({
   selector: 'app-welcome',
@@ -16,6 +17,7 @@ export class WelcomeComponent implements OnInit {
   private $modulos = new Subject<ModuloItem[]>();
   private storageService: StorageServiceService = inject(StorageServiceService);
   public modulos: ModuloItem[] = [];
+  public usuarioResponse!: UsuarioResponse;
   public permision: Permission = inject(Permission);
   private oauthService: OAuthService = inject(OAuthService);
   private router: Router = inject(Router);
@@ -24,6 +26,8 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit() {
     this.modulos = this.permision.getPermission();
+    const usuarioResponse: UsuarioResponse = this.storageService.getItem('login') as UsuarioResponse;
+    this.usuarioResponse = usuarioResponse;
   }
 
   getModulos(): ModuloItem[] {

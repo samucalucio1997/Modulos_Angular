@@ -22,6 +22,7 @@ import { ListEstoqueComponent } from './list-estoque/list-estoque.component';
 import { CadastrarProdutoComponent } from './cadastrar-produto/cadastrar-produto.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { SharedModule } from '../components/shared/shared.module';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { SharedModule } from '../components/shared/shared.module';
     NzInputNumberModule,
     NzButtonModule,
     NzInputModule,
+    NzMessageModule,
     NzGridModule,
     NzSpinModule,
     NzModalModule,
