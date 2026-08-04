@@ -4,7 +4,7 @@ import { ModuloItem } from '../../interfaces/modulos/modulo-item';
 import { Permission } from '../../function/permision';
 import { StorageServiceService } from '../../services/storage-service.service';
 import { Router } from '@angular/router';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 import { UsuarioResponse } from '../../interfaces/usuario-request';
 
 @Component({
@@ -22,11 +22,39 @@ export class WelcomeComponent implements OnInit {
   private oauthService: OAuthService = inject(OAuthService);
   private router: Router = inject(Router);
 
-  constructor() { }
+  private async carregarUsuario(): Promise<void> {
+    const usuarioLocal = this.storageService.getItem('login') as UsuarioResponse | null;
+
+    if (usuarioLocal) {
+      this.usuarioResponse = usuarioLocal;
+      return;
+    }
+
+    const claims = this.oauthService.getIdentityClaims() as any;
+
+    if (claims) {
+      this.usuarioResponse = {
+        ...(claims as UsuarioResponse),
+        nome: claims.name ?? claims.given_name ?? claims.preferred_username ?? '',
+        email: claims.email ?? ''
+      };
+
+      console.log(this.usuarioResponse);
+      return;
+    }
+    
+    console.log('Nenhum dado de usuário encontrado no token do Google');
+  }
 
   ngOnInit() {
     this.modulos = this.permision.getPermission();
     const usuarioResponse: UsuarioResponse = this.storageService.getItem('login') as UsuarioResponse;
+
+    this.carregarUsuario();
+    if (!usuarioResponse) {
+      // this.oauthService.
+      console.log('vindo do google => ', this.oauthService.loadUserProfile());
+    }
     this.usuarioResponse = usuarioResponse;
   }
 

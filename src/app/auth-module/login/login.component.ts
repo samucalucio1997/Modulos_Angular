@@ -35,34 +35,27 @@ export class LoginComponent implements OnInit {
   }
 
   async loginWithGoogle() {
-    if (this.email?.touched || this.password?.touched) {
-      return;
-    }
-    
     const authCodeFlowConfig: AuthConfig = {
       issuer: 'https://accounts.google.com',
       clientId: '5118366054-brr6mo7bfp8rhbcjp9js2q88ib99up0r.apps.googleusercontent.com',
       redirectUri: window.location.origin + '/welcome/dashboard',
       logoutUrl: window.location.origin,
-      strictDiscoveryDocumentValidation: false
+      strictDiscoveryDocumentValidation: false,
+      sessionChecksEnabled: true,
+      scope: 'openid profile email',
+      responseType: 'code'
     };
 
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.setStorage(localStorage);
     this.oauthService.setupAutomaticSilentRefresh();
-    
-    this.oauthService.events.subscribe(e => {
-      if (e.type === 'token_received') {
-        this.actualizarGoogleToken();
-      }
-    });
 
     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    this.oauthService.initCodeFlow();
-    if (!this.oauthService.hasValidIdToken()) {
-      this.oauthService.initCodeFlow();
-    } else {
+
+    if (this.oauthService.hasValidIdToken()) {
       this.actualizarGoogleToken();
+    } else {
+      this.oauthService.initCodeFlow();
     }
   }
 
@@ -77,7 +70,6 @@ export class LoginComponent implements OnInit {
             const login: string = JSON.stringify(response.usuarioDto);
             this.storageService.setItem('login', login);
             this.storageService.setItem('token', String(response.token));
-            console.log('aqui o login', response.usuarioDto);
             this.message.success('Login realizado com sucesso!');
             this.router.navigateByUrl('/welcome');
             this.initializeForm();
