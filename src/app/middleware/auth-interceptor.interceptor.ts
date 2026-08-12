@@ -4,11 +4,13 @@ import { UsuarioService } from '../services/api/usuario.service';
 import { inject } from '@angular/core';
 import { catchError, switchMap, tap, throwError } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { KeycloakService } from '../services/auth/keycloak.service';
 
 export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   const storageService = inject(StorageServiceService);
   const usuarioService = inject(UsuarioService);
   const oauthService: OAuthService = inject(OAuthService);
+  const keycloak = inject(KeycloakService);
 
   const token = storageService.getItemString('token') ?? oauthService.getIdToken();
   const isRefreshRequest = req.headers.get('x-skip-refresh') === 'true';

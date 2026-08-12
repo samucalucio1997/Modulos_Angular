@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  private actualizarGoogleToken(): void {
+  private actualizarGoogleToken(): void {//refatorar para usar a estrategia de freshToken
       const token: string = this.oauthService.getIdToken();
       this.usuarioService.autenticarComGoogle(token)
       .subscribe({
