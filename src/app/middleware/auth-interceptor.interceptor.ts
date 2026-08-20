@@ -1,66 +1,38 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import { StorageServiceService } from '../services/storage-service.service';
-import { UsuarioService } from '../services/api/usuario.service';
 import { inject } from '@angular/core';
-import { catchError, switchMap, tap, throwError } from 'rxjs';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { from, switchMap } from 'rxjs';
+
 import { KeycloakService } from '../services/auth/keycloak.service';
 
 export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
-  const storageService = inject(StorageServiceService);
-  const usuarioService = inject(UsuarioService);
-  const oauthService: OAuthService = inject(OAuthService);
+
   const keycloak = inject(KeycloakService);
 
-  const token = storageService.getItemString('token') ?? oauthService.getIdToken();
-  const isRefreshRequest = req.headers.get('x-skip-refresh') === 'true';
-
-  if (req.url.includes('/auth/login') || req.url.includes('accounts.google.com')) {
+  if (
+    req.url.includes('/auth/login') ||
+    req.url.includes('accounts.google.com')
+  ) {
     return next(req);
   }
 
-  let authReq = req;
-  if (token) {
-    authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-  }
+  return from(keycloak.updateToken()).pipe(
 
-  return next(authReq).pipe(
-    catchError(err => {
+    switchMap(() => {
 
-      // Se não for 401, não tenta refresh
-      if (err.status !== 401) {
-        return throwError(() => err);
+      const token = keycloak.getToken();
+
+      if (!token) {
+        return next(req);
       }
 
-      // Evita loop: refresh não tenta outro refresh
-      if (isRefreshRequest) {
-        return throwError(() => err);
-      }
+      const authReq = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-      // Tenta refresh
-      return usuarioService.refreshToken().pipe(
-        switchMap((newToken: string) => {
-
-          // Salva novo token
-          storageService.setItem('token', newToken);
-
-          // Reexecuta requisição com token novo
-          const retryReq = req.clone({
-            setHeaders: {
-              Authorization: `Bearer ${newToken}`
-            }
-          });
-
-          return next(retryReq);
-        }),
-
-        // Refresh falhou → retorna erro final
-        catchError(errRefresh => throwError(() => errRefresh))
-      );
+      return next(authReq);
     })
+
   );
 };

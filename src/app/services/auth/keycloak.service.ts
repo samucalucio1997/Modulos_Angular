@@ -9,7 +9,7 @@ export class KeycloakService {
 
   private keycloak = new Keycloak({
     url: 'http://localhost:8080',
-    realm: 'meu-realm',
+    realm: 'master',
     clientId: 'angular-frontend'
   });
 
