@@ -9,15 +9,21 @@ export class KeycloakService {
 
   private keycloak = new Keycloak({
     url: 'http://localhost:8080',
-    realm: 'master',
+    realm: 'ecommerce',
     clientId: 'angular-frontend'
   });
 
   async init(): Promise<boolean> {
-    return await this.keycloak.init({
+    const authUser = await this.keycloak.init({
       onLoad: 'login-required',
       pkceMethod: 'S256'
     });
+
+    if (authUser) {
+      console.log('o cara ttá autenticado pae', authUser);
+    }
+
+    return authUser;
   }
 
   login(): Promise<void> {
