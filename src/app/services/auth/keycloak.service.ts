@@ -20,7 +20,7 @@ export class KeycloakService {
     });
 
     if (authUser) {
-      console.log('o cara ttá autenticado pae', authUser);
+      console.log('o cara ttá autenticado pae', this.keycloak.tokenParsed?.realm_access?.roles?.some(res => res === 'ADMIN'));
     }
 
     return authUser;

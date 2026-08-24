@@ -4,11 +4,13 @@ import { inject } from "@angular/core";
 import { LoginResponse, UsuarioResponse } from "../interfaces/usuario-request";
 import { ModuloItem } from "../interfaces/modulos/modulo-item";
 import { OAuthService } from "angular-oauth2-oidc";
+import { KeycloakService } from "../services/auth/keycloak.service";
 
 export class Permission {
     public $modulos: Subject<ModuloItem[]> = new Subject<ModuloItem[]>();
     private storageLocalService: StorageServiceService = inject(StorageServiceService);
     private oauthService: OAuthService = inject(OAuthService);
+    private keycloak: KeycloakService = inject(KeycloakService);
     
 
     getPermission():  ModuloItem[] {
@@ -19,6 +21,9 @@ export class Permission {
             
             perfil = usuarioLogado.role;
         }
+
+        const isAdmin = this.keycloak.hasRole('ADMIN');
+
 
         if (perfil == '') {
             perfil = this.oauthService.getIdToken();
@@ -60,7 +65,7 @@ export class Permission {
             }
         ];
 
-        if (perfil == 'ROLE_ADMIN') {
+        if (perfil == 'ROLE_ADMIN' || isAdmin) {
             return modulosAdmin;
         } else {
             return modulosUser;
