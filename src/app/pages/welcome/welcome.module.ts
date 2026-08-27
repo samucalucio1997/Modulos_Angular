@@ -13,7 +13,6 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { IconsProviderModule } from '../../icons-provider.module';
 import { Permission } from '../../function/permision';
-import { OAuthModule } from 'angular-oauth2-oidc';
 import { DetalharProdutoModule } from '../detalhar-produto/detalhar-produto.module';
 
 
@@ -25,7 +24,6 @@ import { DetalharProdutoModule } from '../detalhar-produto/detalhar-produto.modu
         NzLayoutModule,
         NzMenuModule,
         NzTableModule,
-        OAuthModule,
         NzCardModule,
         NzButtonModule,
         IconsProviderModule

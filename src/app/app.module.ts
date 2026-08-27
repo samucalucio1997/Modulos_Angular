@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,14 +26,11 @@ import { IconsProviderModule } from './icons-provider.module';
 import { authInterceptorInterceptor } from './middleware/auth-interceptor.interceptor';
 import { environment } from './enviroments/enviroments';
 import { CORE_API_URL } from './services/api/core.constants';
-import { OAuthModule, provideOAuthClient } from 'angular-oauth2-oidc';
 import { KeycloakService } from './services/auth/keycloak.service';
 
 registerLocaleData(pt);
 
-export function initializeKeycloak(
-  keycloakService: KeycloakService
-) {
+export function initializeKeycloak(keycloakService: KeycloakService) {
   return () => keycloakService.init();
 }
 
@@ -49,7 +46,6 @@ export function initializeKeycloak(
     NzMenuModule,
     NzTableModule,
     NzCardModule,
-    OAuthModule,
     NzSelectModule,
     NzInputNumberModule,
     NzButtonModule,
@@ -60,22 +56,21 @@ export function initializeKeycloak(
     IconsProviderModule
   ],
   providers: [
-    IconDirective,IconSetService, { provide: NZ_I18N, useValue: pt_BR },
+    IconDirective, IconSetService,
+    { provide: NZ_I18N, useValue: pt_BR },
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([authInterceptorInterceptor]))
-    , 
+    provideHttpClient(withInterceptors([authInterceptorInterceptor])),
     {
       provide: CORE_API_URL,
       useValue: environment.coreApiUrl
     },
-    provideOAuthClient(),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       deps: [KeycloakService],
       multi: true
     }
-    ],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

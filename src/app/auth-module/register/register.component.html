@@ -1,0 +1,155 @@
+<div class="register-container">
+  <div class="row g-0 h-100">
+
+    <!-- LADO ESQUERDO -->
+    <div class="col-md-6 d-none d-md-flex left-panel">
+      <div class="branding">
+        <h1>StockFlow</h1>
+        <p class="subtitle">Crie sua conta e comece a gerenciar</p>
+
+        <ul>
+          <li>Cadastro rápido e simples</li>
+          <li>Acesso imediato ao sistema</li>
+          <li>Controle total do seu estoque</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LADO DIREITO -->
+    <div class="col-md-6 d-flex align-items-center justify-content-center">
+      <div class="register-card">
+
+        <div class="register-header">
+          <h2>Criar Conta</h2>
+          <p>Preencha os dados para se registrar</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+
+          <!-- NOME / SOBRENOME -->
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="firstName">Nome</label>
+              <div class="input-with-icon">
+                <input id="firstName" type="text" formControlName="firstName"
+                  placeholder="Nome"
+                  [class.error]="firstName?.invalid && firstName?.touched" />
+              </div>
+              <div class="error-messages" *ngIf="firstName?.invalid && firstName?.touched">
+                <small *ngIf="firstName?.errors?.['required']">Nome é obrigatório</small>
+                <small *ngIf="firstName?.errors?.['minlength']">Mínimo 2 caracteres</small>
+              </div>
+            </div>
+
+            <div class="form-group half">
+              <label for="lastName">Sobrenome</label>
+              <div class="input-with-icon">
+                <input id="lastName" type="text" formControlName="lastName"
+                  placeholder="Sobrenome"
+                  [class.error]="lastName?.invalid && lastName?.touched" />
+              </div>
+              <div class="error-messages" *ngIf="lastName?.invalid && lastName?.touched">
+                <small *ngIf="lastName?.errors?.['required']">Sobrenome é obrigatório</small>
+                <small *ngIf="lastName?.errors?.['minlength']">Mínimo 2 caracteres</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- USUÁRIO -->
+          <div class="form-group">
+            <label for="username">Usuário</label>
+            <div class="input-with-icon">
+              <input id="username" type="text" formControlName="username"
+                placeholder="Escolha um nome de usuário"
+                [class.error]="username?.invalid && username?.touched" />
+            </div>
+            <div class="error-messages" *ngIf="username?.invalid && username?.touched">
+              <small *ngIf="username?.errors?.['required']">Usuário é obrigatório</small>
+              <small *ngIf="username?.errors?.['minlength']">Mínimo 3 caracteres</small>
+            </div>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-with-icon">
+              <input id="email" type="email" formControlName="email"
+                placeholder="Digite seu email"
+                [class.error]="email?.invalid && email?.touched" />
+            </div>
+            <div class="error-messages" *ngIf="email?.invalid && email?.touched">
+              <small *ngIf="email?.errors?.['required']">Email é obrigatório</small>
+              <small *ngIf="email?.errors?.['email']">Email inválido</small>
+            </div>
+          </div>
+
+          <!-- SENHA -->
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <div class="input-with-icon">
+              <input id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Crie uma senha"
+                [class.error]="password?.invalid && password?.touched" />
+
+              <button type="button" class="password-toggle"
+                (click)="togglePasswordVisibility()" tabindex="-1">
+                <span *ngIf="!showPassword">&#128065;</span>
+                <span *ngIf="showPassword">&#128584;</span>
+              </button>
+            </div>
+            <div class="error-messages" *ngIf="password?.invalid && password?.touched">
+              <small *ngIf="password?.errors?.['required']">Senha é obrigatória</small>
+              <small *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</small>
+            </div>
+          </div>
+
+          <!-- CONFIRMAR SENHA -->
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar Senha</label>
+            <div class="input-with-icon">
+              <input id="confirmPassword"
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                formControlName="confirmPassword"
+                placeholder="Confirme sua senha"
+                [class.error]="confirmPassword?.invalid && confirmPassword?.touched" />
+
+              <button type="button" class="password-toggle"
+                (click)="toggleConfirmPasswordVisibility()" tabindex="-1">
+                <span *ngIf="!showConfirmPassword">&#128065;</span>
+                <span *ngIf="showConfirmPassword">&#128584;</span>
+              </button>
+            </div>
+            <div class="error-messages" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
+              <small *ngIf="confirmPassword?.errors?.['required']">Confirmação é obrigatória</small>
+              <small *ngIf="confirmPassword?.errors?.['passwordMismatch']">As senhas não coincidem</small>
+            </div>
+          </div>
+
+          <!-- BOTÃO REGISTRAR -->
+          <button type="submit"
+            class="register-button"
+            [disabled]="isLoading"
+            [class.loading]="isLoading">
+
+            <span *ngIf="!isLoading">Criar Conta</span>
+
+            <span *ngIf="isLoading">
+              <span class="spinner"></span>
+              Criando...
+            </span>
+          </button>
+
+          <!-- LINK LOGIN -->
+          <div class="login-link">
+            <p>Já tem uma conta? <a routerLink="/auth/login">Faça login</a></p>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
