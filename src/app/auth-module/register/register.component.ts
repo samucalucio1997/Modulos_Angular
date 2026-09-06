@@ -30,8 +30,8 @@ export class RegisterComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]]
+      // password: ['', [Validators.required, Validators.minLength(6)]],
+      // confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -50,9 +50,9 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.registerForm.valid) {
       this.isLoading = true;
-      const { username, email, firstName, lastName, password } = this.registerForm.value;
+      const { username, email, firstName, lastName } = this.registerForm.value;
 
-      this.keycloakAuth.register(username, email, firstName, lastName, password).subscribe({
+      this.keycloakAuth.register(username, email, firstName, lastName).subscribe({
         next: () => {
           this.message.success('Conta criada com sucesso! Faça login para continuar.');
           this.router.navigateByUrl('/auth/login');

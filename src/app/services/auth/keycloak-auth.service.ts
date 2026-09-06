@@ -14,12 +14,15 @@ export interface KeycloakTokenResponse {
 }
 
 export interface KeycloakUserRepresentation {
+  requiredActions: string[];
+  emailVerified: boolean;
   username: string;
   email: string;
   firstName: string;
   lastName: string;
+  groups: string[];
+  attributes: Record<string, string[] | string>;
   enabled: boolean;
-  credentials?: { type: string; value: string; temporary: boolean }[];
 }
 
 @Injectable({
@@ -77,8 +80,7 @@ export class KeycloakAuthService {
     username: string,
     email: string,
     firstName: string,
-    lastName: string,
-    password: string
+    lastName: string
   ): Observable<void> {
     return this.getAdminToken().pipe(
       switchMap(adminToken => {
@@ -88,11 +90,10 @@ export class KeycloakAuthService {
           firstName,
           lastName,
           enabled: true,
-          credentials: [{
-            type: 'password',
-            value: password,
-            temporary: false
-          }]
+          requiredActions: [],
+          emailVerified: false,
+          groups: [],
+          attributes: {}
         };
 
         const headers = new HttpHeaders({
