@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, switchMap, map, catchError, throwError } from 'rxjs';
 import { environment } from '../../enviroments/enviroments';
 import { KeycloakService } from './keycloak.service';
+import { CredentialRepresentation, UserRepresentation } from '../../interfaces/auth';
 
 export interface KeycloakTokenResponse {
   access_token: string;
@@ -39,6 +40,10 @@ export class KeycloakAuthService {
 
   private get adminUsersUrl(): string {
     return `${environment.keycloak.url}/admin/realms/${environment.keycloak.realm}/users`;
+  }
+
+  private get userID() {
+    return `${environment.keycloak.url}/admin/realms/{realm}/users`;
   }
 
   /**
@@ -130,4 +135,45 @@ export class KeycloakAuthService {
       catchError(() => throwError(() => new Error('Falha ao obter token de administração')))
     );
   }
+
+  getUserIdByUsername(username: string): Observable<UserRepresentation[]> {
+    return this.getAdminToken().pipe(
+      switchMap(adminToken => {
+        const query = new URLSearchParams({
+          username: username,
+          exact: 'true'
+        });
+
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        });
+
+        return this.http.get<UserRepresentation[]>(`${environment.keycloak.url}/admin/realms/${environment.keycloak.realm}/users?${query.toString()}`, { headers });
+      })
+    );
+  }
+
+  definirSenha(userID: string): Observable<void> {
+    return this.getAdminToken().pipe(
+      switchMap(adminToken => {
+  
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        });
+  
+        const body = [
+          'UPDATE_PASSWORD'
+        ];
+  
+        return this.http.put<void>(
+          `${environment.keycloak.url}/admin/realms/${environment.keycloak.realm}/users/${userID}/execute-actions-email`,
+          body,
+          { headers }
+        );
+      })
+    );
+}
+
 }

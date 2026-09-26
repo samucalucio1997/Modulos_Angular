@@ -8,6 +8,6 @@ export const environment = {
     realm: 'ecommerce',
     clientId: 'angular-frontend',
     adminClientId: 'admin-cli',
-    adminClientSecret: 'CHANGE_ME'
+    adminClientSecret: 'dvHoADtQko7iGRpvXDYc6dyPXPwRLd9NBsPnzfUb7R8hhpWbihuGBEFfArgH4bUgMnuCa2Dxq9RoLGPxq3LlAv'
   }
 };

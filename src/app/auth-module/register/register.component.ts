@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { KeycloakAuthService } from '../../services/auth/keycloak-auth.service';
+import { forkJoin, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -52,7 +53,16 @@ export class RegisterComponent implements OnInit {
       this.isLoading = true;
       const { username, email, firstName, lastName } = this.registerForm.value;
 
-      this.keycloakAuth.register(username, email, firstName, lastName).subscribe({
+      this.keycloakAuth.register(username, email, firstName, lastName)
+      .pipe(
+        switchMap(() => this.keycloakAuth.getUserIdByUsername(username)),
+        switchMap(user => {
+         console.log('Usuário encontrado:', user[0]);
+
+         return this.keycloakAuth.definirSenha(user[0].id);
+        })
+      )
+      .subscribe({
         next: () => {
           this.message.success('Conta criada com sucesso! Faça login para continuar.');
           this.router.navigateByUrl('/auth/login');
@@ -66,6 +76,25 @@ export class RegisterComponent implements OnInit {
           this.isLoading = false;
         }
       });
+
+      // this.keycloakAuth.getUserIdByUsername(username).subscribe({
+      //   next: (user) => {
+      //     console.log('aqui tá o usuario ', user)
+      //     if (user.username) {
+      //       this.keycloakAuth.definirSenha(user.id).subscribe(() => {
+      //         this.message.success('verifique seu email para redefinir sua senha');
+      //       });
+      //     }
+      //   },
+      //   error: (err) => {
+      //     console.error('Erro ao criar conta:', err);
+      //     this.message.error(err.message || 'Erro ao criar conta. Tente novamente.');
+      //     this.isLoading = false;
+      //   },
+      //   complete: () => {
+      //     this.isLoading = false;
+      //   }
+      // })
     } else {
       this.markFormGroupTouched();
     }
