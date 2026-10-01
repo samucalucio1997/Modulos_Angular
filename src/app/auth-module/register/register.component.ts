@@ -58,13 +58,12 @@ export class RegisterComponent implements OnInit {
         switchMap(() => this.keycloakAuth.getUserIdByUsername(username)),
         switchMap(user => {
          console.log('Usuário encontrado:', user[0]);
-
          return this.keycloakAuth.definirSenha(user[0].id);
         })
       )
       .subscribe({
         next: () => {
-          this.message.success('Conta criada com sucesso! Faça login para continuar.');
+          this.message.success('Conta criada com sucesso! Acesse seu email cadastrado para definir sua senha');
           this.router.navigateByUrl('/auth/login');
         },
         error: (err) => {
