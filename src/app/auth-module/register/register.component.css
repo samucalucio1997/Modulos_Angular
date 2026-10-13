@@ -94,12 +94,6 @@
   font-size: 14px;
 }
 
-.password-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
 .error {
   border: 1px solid red;
 }
@@ -107,6 +101,20 @@
 .error-messages small {
   color: red;
   font-size: 12px;
+}
+
+.password-info {
+  background: #f0f4ff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.password-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #5b6cff;
+  text-align: center;
 }
 
 .register-button {
@@ -139,6 +147,8 @@
   border-radius: 50%;
   display: inline-block;
   animation: spin 1s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
 @keyframes spin {

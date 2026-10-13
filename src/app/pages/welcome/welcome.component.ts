@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ModuloItem } from '../../interfaces/modulos/modulo-item';
 import { Permission } from '../../function/permision';
-import { Router } from '@angular/router';
 import { KeycloakService } from '../../services/auth/keycloak.service';
 
 @Component({
@@ -16,21 +15,25 @@ export class WelcomeComponent implements OnInit {
   public modulos: ModuloItem[] = [];
   public nomeUsuario: string = '';
   public permision: Permission = inject(Permission);
-  private router: Router = inject(Router);
   private keycloakService: KeycloakService = inject(KeycloakService);
 
   ngOnInit() {
     this.modulos = this.permision.getPermission();
-    this.nomeUsuario = this.keycloakService.getUsername() ?? 'Usuário';
+    this.nomeUsuario = this.keycloakService.getFullName() 
+      ?? this.keycloakService.getUsername() 
+      ?? 'Usuário';
   }
 
   getModulos(): ModuloItem[] {
     return this.modulos;
   }
 
+  /**
+   * Faz logout no Keycloak e redireciona para a página inicial.
+   * O Keycloak encerra a sessão SSO completamente.
+   */
   handlerLogOut(): void {
-    this.keycloakService.clearTokens();
-    this.router.navigate(['/auth/login']);
+    this.keycloakService.logout();
   }
 
   handleTuggle(): void {

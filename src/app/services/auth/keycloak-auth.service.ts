@@ -2,8 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, switchMap, map, catchError, throwError } from 'rxjs';
 import { environment } from '../../enviroments/enviroments';
-import { KeycloakService } from './keycloak.service';
-import { CredentialRepresentation, UserRepresentation } from '../../interfaces/auth';
+import { UserRepresentation } from '../../interfaces/auth';
 
 export interface KeycloakTokenResponse {
   access_token: string;
@@ -26,13 +25,20 @@ export interface KeycloakUserRepresentation {
   enabled: boolean;
 }
 
+/**
+ * Serviço para operações administrativas no Keycloak.
+ * 
+ * NOTA: Com Authorization Code Flow + PKCE, o login é feito
+ * diretamente pelo KeycloakService.login() que redireciona
+ * para a página do Keycloak. Este serviço mantém apenas
+ * operações administrativas via Admin REST API.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class KeycloakAuthService {
 
   private http = inject(HttpClient);
-  private keycloakService = inject(KeycloakService);
 
   private get tokenUrl(): string {
     return `${environment.keycloak.url}/realms/${environment.keycloak.realm}/protocol/openid-connect/token`;
@@ -40,37 +46,6 @@ export class KeycloakAuthService {
 
   private get adminUsersUrl(): string {
     return `${environment.keycloak.url}/admin/realms/${environment.keycloak.realm}/users`;
-  }
-
-  private get userID() {
-    return `${environment.keycloak.url}/admin/realms/{realm}/users`;
-  }
-
-  /**
-   * Login direto via Resource Owner Password Credentials (ROPC) grant.
-   * Requer que o client no Keycloak tenha "Direct Access Grants Enabled".
-   */
-  login(username: string, password: string): Observable<KeycloakTokenResponse> {
-    const body = new URLSearchParams();
-    body.set('grant_type', 'password');
-    body.set('client_id', environment.keycloak.clientId);
-    body.set('username', username);
-    body.set('password', password);
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-
-    return this.http.post<KeycloakTokenResponse>(this.tokenUrl, body.toString(), { headers }).pipe(
-      map(response => {
-        this.keycloakService.setTokens(response.access_token, response.refresh_token);
-        return response;
-      }),
-      catchError(err => {
-        const message = err.error?.error_description || 'Credenciais inválidas';
-        return throwError(() => new Error(message));
-      })
-    );
   }
 
   /**
@@ -120,6 +95,9 @@ export class KeycloakAuthService {
     );
   }
 
+  /**
+   * Obtém token administrativo via client credentials.
+   */
   private getAdminToken(): Observable<string> {
     const body = new URLSearchParams();
     body.set('grant_type', 'client_credentials');
@@ -136,6 +114,9 @@ export class KeycloakAuthService {
     );
   }
 
+  /**
+   * Busca usuário pelo username.
+   */
   getUserIdByUsername(username: string): Observable<UserRepresentation[]> {
     return this.getAdminToken().pipe(
       switchMap(adminToken => {
@@ -149,31 +130,33 @@ export class KeycloakAuthService {
           'Authorization': `Bearer ${adminToken}`
         });
 
-        return this.http.get<UserRepresentation[]>(`${environment.keycloak.url}/admin/realms/${environment.keycloak.realm}/users?${query.toString()}`, { headers });
+        return this.http.get<UserRepresentation[]>(
+          `${this.adminUsersUrl}?${query.toString()}`,
+          { headers }
+        );
       })
     );
   }
 
-  definirSenha(userID: string): Observable<void> {
+  /**
+   * Dispara ação de definição de senha por e-mail.
+   */
+  sendPasswordResetEmail(userID: string): Observable<void> {
     return this.getAdminToken().pipe(
       switchMap(adminToken => {
-  
         const headers = new HttpHeaders({
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${adminToken}`
         });
-  
-        const body = [
-          'UPDATE_PASSWORD'
-        ];
-  
+
+        const body = ['UPDATE_PASSWORD'];
+
         return this.http.put<void>(
-          `${environment.keycloak.url}/admin/realms/${environment.keycloak.realm}/users/${userID}/execute-actions-email`,
+          `${this.adminUsersUrl}/${userID}/execute-actions-email`,
           body,
           { headers }
         );
       })
     );
-}
-
+  }
 }

@@ -4,16 +4,23 @@ import { from, switchMap } from 'rxjs';
 import { KeycloakService } from '../services/auth/keycloak.service';
 import { environment } from '../enviroments/enviroments';
 
+/**
+ * Interceptor que anexa o Bearer token do Keycloak às requisições HTTP.
+ * 
+ * - Ignora requisições para o próprio Keycloak
+ * - Renova o token automaticamente se estiver próximo da expiração
+ * - Usa Authorization Code Flow + PKCE (tokens gerenciados pelo keycloak-js)
+ */
 export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
-
   const keycloak = inject(KeycloakService);
 
-  const isKeycloakUrl = req.url.startsWith(environment.keycloak.url);
-  if (isKeycloakUrl) {
+  // Não anexa token em requisições para o Keycloak
+  if (req.url.startsWith(environment.keycloak.url)) {
     return next(req);
   }
 
-  return from(keycloak.updateToken()).pipe(
+  // Renova o token se necessário e anexa às requisições
+  return from(keycloak.updateToken(30)).pipe(
     switchMap(() => {
       const token = keycloak.getToken();
 

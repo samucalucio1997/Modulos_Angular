@@ -7,13 +7,11 @@ import { RouterModule } from '@angular/router';
 import { AuthModuleRoutingModule } from './auth-module-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ConfirmarSenhaComponent } from './confirmar-senha/confirmar-senha.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent,
-    ConfirmarSenhaComponent
+    RegisterComponent
   ],
   imports: [
     CommonModule,

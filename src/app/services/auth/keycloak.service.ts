@@ -13,9 +13,11 @@ export class KeycloakService {
     clientId: environment.keycloak.clientId
   });
 
-  private _token: string | undefined;
-  private _refreshToken: string | undefined;
-
+  /**
+   * Inicializa o Keycloak com Authorization Code Flow + PKCE.
+   * - check-sso: verifica sessão existente silenciosamente
+   * - pkceMethod S256: ativa PKCE para segurança adicional
+   */
   async init(): Promise<boolean> {
     const authenticated = await this.keycloak.init({
       onLoad: 'check-sso',
@@ -23,126 +25,106 @@ export class KeycloakService {
       silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html'
     });
 
-    if (authenticated) {
-      this._token = this.keycloak.token;
-      this._refreshToken = this.keycloak.refreshToken;
-    }
-
     return authenticated;
   }
 
-  setTokens(accessToken: string, refreshToken: string): void {
-    this._token = accessToken;
-    this._refreshToken = refreshToken;
+  /**
+   * Redireciona o usuário para a página de login do Keycloak.
+   * Após autenticação, retorna para a URL especificada.
+   */
+  login(redirectUri?: string): Promise<void> {
+    return this.keycloak.login({
+      redirectUri: redirectUri ?? window.location.origin + '/welcome'
+    });
   }
 
-  clearTokens(): void {
-    this._token = undefined;
-    this._refreshToken = undefined;
+  /**
+   * Redireciona o usuário para a página de registro do Keycloak.
+   */
+  register(redirectUri?: string): Promise<void> {
+    return this.keycloak.register({
+      redirectUri: redirectUri ?? window.location.origin + '/welcome'
+    });
   }
 
-  login(): Promise<void> {
-    return this.keycloak.login();
+  /**
+   * Encerra a sessão no Keycloak e redireciona para a origem.
+   */
+  logout(): Promise<void> {
+    return this.keycloak.logout({
+      redirectUri: window.location.origin
+    });
   }
 
-  async logout(): Promise<void> {
-    if (this.keycloak.authenticated) {
-      await this.keycloak.logout({ redirectUri: window.location.origin });
-    }
-    this.clearTokens();
-  }
-
+  /**
+   * Retorna o access token atual.
+   * O keycloak-js gerencia o token em memória automaticamente.
+   */
   getToken(): string | undefined {
-    return this._token ?? this.keycloak.token;
+    return this.keycloak.token;
   }
 
-  getRefreshToken(): string | undefined {
-    return this._refreshToken ?? this.keycloak.refreshToken;
-  }
-
+  /**
+   * Verifica se o usuário está autenticado.
+   */
   isAuthenticated(): boolean {
-    return !!(this._token) || (this.keycloak.authenticated ?? false);
+    return this.keycloak.authenticated ?? false;
   }
 
-  async updateToken(): Promise<boolean> {
-    if (this.keycloak.authenticated) {
-      const refreshed = await this.keycloak.updateToken(30);
-      if (refreshed) {
-        this._token = this.keycloak.token;
-      }
-      return refreshed;
-    }
-
-    if (this._refreshToken) {
-      return this.refreshDirectToken();
-    }
-
-    return false;
-  }
-
-  private async refreshDirectToken(): Promise<boolean> {
+  /**
+   * Renova o token se estiver próximo da expiração (30 segundos).
+   * Retorna true se o token foi renovado ou ainda é válido.
+   */
+  async updateToken(minValidity: number = 30): Promise<boolean> {
     try {
-      const tokenUrl = `${environment.keycloak.url}/realms/${environment.keycloak.realm}/protocol/openid-connect/token`;
-
-      const body = new URLSearchParams();
-      body.set('grant_type', 'refresh_token');
-      body.set('client_id', environment.keycloak.clientId);
-      body.set('refresh_token', this._refreshToken!);
-
-      const response = await fetch(tokenUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body.toString()
-      });
-
-      if (!response.ok) return false;
-
-      const data = await response.json();
-      this._token = data.access_token;
-      this._refreshToken = data.refresh_token;
-      return true;
+      const refreshed = await this.keycloak.updateToken(minValidity);
+      return refreshed || this.isAuthenticated();
     } catch {
       return false;
     }
   }
 
+  /**
+   * Retorna o nome de usuário (preferred_username) do token.
+   */
   getUsername(): string | undefined {
-    if (this.keycloak.tokenParsed) {
-      return this.keycloak.tokenParsed['preferred_username'];
-    }
-
-    if (this._token) {
-      const payload = JSON.parse(atob(this._token.split('.')[1]));
-      return payload['preferred_username'];
-    }
-
-    return undefined;
+    return this.keycloak.tokenParsed?.['preferred_username'];
   }
 
+  /**
+   * Retorna o email do usuário do token.
+   */
+  getEmail(): string | undefined {
+    return this.keycloak.tokenParsed?.['email'];
+  }
+
+  /**
+   * Retorna o nome completo do usuário.
+   */
+  getFullName(): string | undefined {
+    const given = this.keycloak.tokenParsed?.['given_name'] ?? '';
+    const family = this.keycloak.tokenParsed?.['family_name'] ?? '';
+    return `${given} ${family}`.trim() || undefined;
+  }
+
+  /**
+   * Retorna o token decodificado (payload).
+   */
   getTokenParsed(): Record<string, any> | undefined {
-    if (this.keycloak.tokenParsed) {
-      return this.keycloak.tokenParsed;
-    }
-
-    if (this._token) {
-      return JSON.parse(atob(this._token.split('.')[1]));
-    }
-
-    return undefined;
+    return this.keycloak.tokenParsed;
   }
 
+  /**
+   * Verifica se o usuário possui uma realm role específica.
+   */
   hasRole(role: string): boolean {
-    if (this.keycloak.authenticated) {
-      return this.keycloak.hasRealmRole(role);
-    }
-
-    const parsed = this.getTokenParsed();
-    if (parsed?.['realm_access']?.['roles']) {
-      return parsed['realm_access']['roles'].includes(role);
-    }
-
-    return false;
+    return this.keycloak.hasRealmRole(role);
   }
 
-
+  /**
+   * Verifica se o usuário possui uma client role específica.
+   */
+  hasClientRole(clientId: string, role: string): boolean {
+    return this.keycloak.hasResourceRole(role, clientId);
+  }
 }
